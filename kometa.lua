@@ -20,7 +20,7 @@ local hi = false
 -- Script tables
 
 local temptable = {
-    version = "1.2.1",
+    version = "1.3.0",
     blackfield = "Ant Field",
     redfields = {},
     bluefields = {},
@@ -30,8 +30,10 @@ local temptable = {
     puffshroomdetected = false,
     magnitude = 70,
     size = nil,
+    WebSocket = nil,
     running = false,
     configname = "",
+    globalconfigname = "",
     tokenpath = game:GetService("Workspace").Collectibles,
     started = {
         vicious = false,
@@ -148,6 +150,8 @@ local temptable = {
     foundpopstar = false,
     item_names = {}
 }
+
+
 local planterst = {}
 local planterstindexed = {}
 
@@ -343,21 +347,18 @@ local kometa = {
             enabled = false,
             Type = require(game:GetService("ReplicatedStorage").PlanterTypes).INVENTORY_ORDER[1],
             growth = 1,
-            safepuffs = false,
             field = fieldstable[1]
         },
         {
             enabled = false,
             Type = require(game:GetService("ReplicatedStorage").PlanterTypes).INVENTORY_ORDER[1],
             growth = 1,
-            safepuffs = false,
             field = fieldstable[2]
         },
         {
             enabled = false,
             Type = require(game:GetService("ReplicatedStorage").PlanterTypes).INVENTORY_ORDER[1],
             growth = 1,
-            safepuffs = false,
             field = fieldstable[3]
         }
     }
@@ -369,6 +370,66 @@ local kometawebhook = {
 
 local defaultkometa = kometa
 local defaultkometawebhook = kometawebhook
+
+
+-- websocket
+
+-- if syn then
+--     if pcall(function() syn.websocket.connect("ws://api.kometa.ga:8888/") end) then
+--         temptable.WebSocket = syn.websocket.connect("ws://api.kometa.ga:8888/")
+--     end
+-- elseif Krnl then
+--     if Krnl.Websocket.connect("ws://api.kometa.ga:8888/") then
+--         temptable.WebSocket = Krnl.Websocket.connect("ws://api.kometa.ga:8888/")
+--     end
+-- end
+
+if syn then
+    pcall(function()
+        temptable.WebSocket = syn.websocket.connect("ws://api.kometa.ga:8888/")
+    end)
+elseif Krnl then
+    pcall(function()
+        temptable.WebSocket = Krnl.WebSocket.connect("ws://api.kometa.ga:8888/")
+    end)
+end
+
+if temptable.WebSocket then
+    if syn or Krnl then
+        temptable.WebSocket.OnMessage:Connect(function(msg)
+            local Data = game:GetService("HttpService"):JSONDecode(msg)
+            if Data.hwid == game:GetService("RbxAnalyticsService"):GetClientId() then
+                if Data.action == 'ConfigSave' then
+                    if Data.statusCode == "601" then
+                        api.notify("kometa", "Your config has been saved and it's id copied to your clipboard", 5)
+                        setclipboard(Data.id)
+                    elseif Data.statusCode == "602" then
+                        api.notify('kometa', 'Your config is too big.')
+                    end
+                elseif Data.action == 'ConfigLoad' then
+                    if Data.statusCode == "601" then
+                        api.notify("kometa", "Your config has been loaded.", 5)
+                        local Config = Data.cfg
+                        kometa = game:service'HttpService':JSONDecode(Config)
+                    else
+                        api.notify('kometa', 'Cannot find config with this id.')
+                    end
+                end
+            end
+            if Data.action == 'Notification' and Data.message then
+                task.spawn(function() 
+                    local oldColor = game:GetService("Players").LocalPlayer.PlayerGui.ScreenGui.ServerMessage.BackgroundColor3
+                    game:GetService("Players").LocalPlayer.PlayerGui.ScreenGui.ServerMessage.BackgroundColor3 = Color3.fromRGB(164, 84, 255)
+                    game:GetService("Players").LocalPlayer.PlayerGui.ScreenGui.ServerMessage.Visible = true 
+                    game:GetService("Players").LocalPlayer.PlayerGui.ScreenGui.ServerMessage.TextBox.Text = Data.message
+                    task.wait(120)
+                    game:GetService("Players").LocalPlayer.PlayerGui.ScreenGui.ServerMessage.Visible = false
+                    game:GetService("Players").LocalPlayer.PlayerGui.ScreenGui.ServerMessage.BackgroundColor3 = oldColor
+                end)
+            end
+        end)
+    end
+end
 
 
 -- functions
@@ -657,7 +718,7 @@ function getplanters()
     for i,v in pairs(debug.getupvalues(require(game:GetService("ReplicatedStorage").LocalPlanters).LoadPlanter)[4]) do 
         if v.IsMine then
             if planterst[v.Type][1] == nil then
-                planterst[v.Type] = {v.Type, v.ActorID, v.Puffshroom, v.GrowthPercent, v.Pos}
+                planterst[v.Type] = {v.Type, v.ActorID, v.GrowthPercent, v.Pos}
             end
         end
     end
@@ -782,15 +843,12 @@ function collectplanters()
         end
         if planterToCollect == nil then continue end
         if planterToCollect.enabled then
-            if planterToCollect.growth < v[4] + 0.01 then
-                if v[3] and planterToCollect.safepuffs then
-                    continue
-                end
-                api.teleport(CFrame.new(v[5]))
+            if planterToCollect.growth < v[3] + 0.01 then
+                api.teleport(CFrame.new(v[4]))
                 game:GetService("ReplicatedStorage").Events.PlanterModelCollect:FireServer(v[2])
                 task.wait(2)
                 -- game:GetService("ReplicatedStorage").Events.PlayerActivesCommand:FireServer({["Name"] = v.." Planter"})
-                for i = 1, 5 do gettoken(CFrame.new(v[5]).Position) end
+                for i = 1, 5 do gettoken(CFrame.new(v[4]).Position) end
                 task.wait(2)
                 planterst[v[1]] = {}
             end
@@ -1049,6 +1107,7 @@ local wayptab = ui:Category("Waypoints")
 local hivetab = ui:Category("Hive")
 local misctab = ui:Category("Misc")
 local extrtab = ui:Category("Extra")
+local Configs_Category = ui:Category("Configs")
 local setttab = ui:Category("Settings")
 
 local main = hometab:Sector("Main")
@@ -1110,21 +1169,18 @@ psec1:Cheat("Dropdown", "Planter", function(Option) kometa.planterssettings[1].T
 psec1:Cheat("Dropdown", "Field", function(Option) kometa.planterssettings[1].field = Option end, {options=fieldstable})
 psec1:Cheat("Slider", "Growth Percent", function(Value) kometa.planterssettings[1].growth = tonumber(Value)/100 or 1 end, {min = 0, max = 100, suffix = "%"})
 psec1:Cheat("Checkbox", "Auto Plant", function(State) kometa.planterssettings[1].enabled = State end)
-psec1:Cheat("Checkbox", "Ignore If Puffshrooms", function(State) kometa.planterssettings[1].safepuffs = State end)
 
 local psec2 = planterstab:Sector("Second Planter")
 psec2:Cheat("Dropdown", "Planter", function(Option) kometa.planterssettings[2].Type = Option end, {options=require(game:GetService("ReplicatedStorage").PlanterTypes).INVENTORY_ORDER})
 psec2:Cheat("Dropdown", "Field", function(Option) kometa.planterssettings[2].field = Option end, {options=fieldstable})
 psec2:Cheat("Slider", "Growth Percent", function(Value) kometa.planterssettings[2].growth = tonumber(Value)/100 or 1 end, {min = 0, max = 100, suffix = "%"})
 psec2:Cheat("Checkbox", "Auto Plant", function(State) kometa.planterssettings[2].enabled = State end)
-psec2:Cheat("Checkbox", "Ignore If Puffshrooms", function(State) kometa.planterssettings[2].safepuffs = State end)
 
 local psec3 = planterstab:Sector("Third Planter")
 psec3:Cheat("Dropdown", "Planter", function(Option) kometa.planterssettings[3].Type = Option end, {options=require(game:GetService("ReplicatedStorage").PlanterTypes).INVENTORY_ORDER})
 psec3:Cheat("Dropdown", "Field", function(Option) kometa.planterssettings[3].field = Option end, {options=fieldstable})
 psec3:Cheat("Slider", "Growth Percent", function(Value) kometa.planterssettings[3].growth = tonumber(Value)/100 or 1 end, {min = 0, max = 100, suffix = "%"})
 psec3:Cheat("Checkbox", "Auto Plant", function(State) kometa.planterssettings[3].enabled = State end)
-psec3:Cheat("Checkbox", "Ignore If Puffshrooms", function(State) kometa.planterssettings[3].safepuffs = State end)
 
 local mobkill = combtab:Sector("Combat")
 mobkill:Cheat("Checkbox", "Train Crab", function(State) if State then api.humanoidrootpart().CFrame = CFrame.new(-307.52117919922, 107.91863250732, 467.86791992188) end end)
@@ -1326,11 +1382,6 @@ guisettings:Cheat("Checkbox", "RGB GUI", function(State)
 end)
 guisettings:Cheat("ColorPicker", "GUI Color", function(Value) game:GetService("CoreGui").kometaUI.Container.BackgroundColor3 = Value end)
 guisettings:Cheat("Textbox", "GUI Transparency", function(Value)game:GetService("CoreGui").kometaUI.Container.BackgroundTransparency = Value for i,v in pairs(game:GetService("CoreGui").kometaUI.Container:GetChildren()) do    if v.Name == "Separator" then    v.BackgroundTransparency = Value end end	game:GetService("CoreGui").kometaUI.Container.Shadow.ImageTransparency = Value end, { placeholder = "between 0 and 1"})
-local komets = setttab:Sector("Configs")
-komets:Cheat("Textbox", "Config Name", function(Value) temptable.configname = Value end, {placeholder = 'ex: stumpconfig'})
-komets:Cheat("Button", "Load Config", function() kometa = game:service'HttpService':JSONDecode(readfile("kometa/BSS_"..temptable.configname..".json")) kometawebhook = game:service'HttpService':JSONDecode(readfile("kometa/BSS_webhook_"..temptable.configname..".json")) end, {text = ' '})
-komets:Cheat("Button", "Save Config", function() writefile("kometa/BSS_"..temptable.configname..".json",game:service'HttpService':JSONEncode(kometa)) writefile("kometa/BSS_webhook_"..temptable.configname..".json",game:service'HttpService':JSONEncode(kometawebhook)) end, {text = ' '})
-komets:Cheat("Button", "Reset Config", function() kometa = defaultkometa kometawebhook = defaultkometawebhook end, {text = ' '})
 local fieldsettings = setttab:Sector("Fields Settings")
 fieldsettings:Cheat("Dropdown", "Best White Field", function(Option) kometa.bestfields.white = Option end, {options = temptable.whitefields})
 fieldsettings:Cheat("Dropdown", "Best Red Field", function(Option) kometa.bestfields.red = Option end, {options = temptable.redfields})
@@ -1347,6 +1398,20 @@ pts:Cheat("Dropdown", "Priority List", function(Option) end, {options = kometa.p
 local aqs = setttab:Sector("Auto Quest Settings")
 aqs:Cheat("Dropdown", "Do NPC Quests", function(Option) kometa.vars.npcprefer = Option end, {options = {'All Quests', 'Bucko Bee', 'Brown Bear', 'Riley Bee', 'Polar Bear'}})
 aqs:Cheat("Checkbox", "Teleport To NPC", function(State) kometa.toggles.tptonpc = State end)
+
+local Local_Configs = Configs_Category:Sector("Local Configs")
+Local_Configs:Cheat("Textbox", "Config Name", function(Value) temptable.configname = Value end, {placeholder = 'ex: stumpconfig'})
+Local_Configs:Cheat("Button", "Load Config", function() kometa = game:service'HttpService':JSONDecode(readfile("kometa/BSS_"..temptable.configname..".json")) kometawebhook = game:service'HttpService':JSONDecode(readfile("kometa/BSS_webhook_"..temptable.configname..".json")) end, {text = ' '})
+Local_Configs:Cheat("Button", "Save Config", function() writefile("kometa/BSS_"..temptable.configname..".json",game:service'HttpService':JSONEncode(kometa)) writefile("kometa/BSS_webhook_"..temptable.configname..".json",game:service'HttpService':JSONEncode(kometawebhook)) end, {text = ' '})
+Local_Configs:Cheat("Button", "Reset Config", function() kometa = defaultkometa kometawebhook = defaultkometawebhook end, {text = ' '})
+
+if (syn or Krnl) and temptable.WebSocket then
+    local Global_Configs = Configs_Category:Sector("Global Configs")
+    Global_Configs:Cheat("Textbox", "Config Id", function(Value) temptable.globalconfigname = Value end, {placeholder = ''})
+    Global_Configs:Cheat("Button", "Load Configs", function() temptable.WebSocket:Send(game:service'HttpService':JSONEncode({ action = 'ConfigLoad', hwid = game:GetService("RbxAnalyticsService"):GetClientId(), id = temptable.globalconfigname })) end, {text = ' '})
+    Global_Configs:Cheat("Button", "Save Configs", function() temptable.WebSocket:Send(game:service'HttpService':JSONEncode({ hwid = game:GetService("RbxAnalyticsService"):GetClientId(), action = 'ConfigSave', cfg = game:service'HttpService':JSONEncode(kometa), ver = temptable.version })) end, {text = ' '})
+end
+
 
 task.spawn(function() while task.wait() do
     if kometa.toggles.autofarm then
