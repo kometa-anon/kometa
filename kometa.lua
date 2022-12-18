@@ -1407,7 +1407,7 @@ Local_Configs:Cheat("Button", "Reset Config", function() kometa = defaultkometa 
 
 if (syn or Krnl) and temptable.WebSocket then
     local Global_Configs = Configs_Category:Sector("Global Configs")
-    Global_Configs:Cheat("Textbox", "Config Id", function(Value) temptable.globalconfigname = Value end, {placeholder = ''})
+    Global_Configs:Cheat("Textbox", "Config ID", function(Value) temptable.globalconfigname = Value end, {placeholder = 'ex: OdACVVunos'})
     Global_Configs:Cheat("Button", "Load Configs", function() temptable.WebSocket:Send(game:service'HttpService':JSONEncode({ action = 'ConfigLoad', hwid = game:GetService("RbxAnalyticsService"):GetClientId(), id = temptable.globalconfigname })) end, {text = ' '})
     Global_Configs:Cheat("Button", "Save Configs", function() temptable.WebSocket:Send(game:service'HttpService':JSONEncode({ hwid = game:GetService("RbxAnalyticsService"):GetClientId(), action = 'ConfigSave', cfg = game:service'HttpService':JSONEncode(kometa), ver = temptable.version })) end, {text = ' '})
 end
