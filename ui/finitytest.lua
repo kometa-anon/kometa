@@ -1058,6 +1058,8 @@ function kometa.new(isdark, gprojectName, thinProject)
 						local minimum = data.min or 0
 						local maximum = data.max or 1
 						local default = data.default
+
+						print(default)
 						
 						local moveconnection
 						local releaseconnection
