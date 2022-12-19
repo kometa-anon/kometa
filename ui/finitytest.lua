@@ -1112,6 +1112,8 @@ function kometa.new(isdark, gprojectName, thinProject)
 							local percent = size / 150
 
 							cheat.value = default or math.floor((minimum + (maximum - minimum) * percent) * 100) / 100
+							print(cheat.value)
+							print(default)
 							cheat.numbervalue.Text = tostring(cheat.value) .. suffix
 
 							if callback then
