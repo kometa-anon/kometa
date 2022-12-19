@@ -1053,7 +1053,6 @@ function kometa.new(isdark, gprojectName, thinProject)
 						cheat.textbox.Parent = cheat.container
 					elseif string.lower(kind) == "slider" then
 						cheat.value = data.default or 0
-						print(cheat.value)
 
 						local suffix = data.suffix or ""
 						local minimum = data.min or 0
@@ -1182,6 +1181,8 @@ function kometa.new(isdark, gprojectName, thinProject)
 								end
 							end)
 						end)
+
+						if data.default then cheat.value = data.default end
 
 						cheat.visiframe.Parent = cheat.sliderbar
 						cheat.numbervalue.Parent = cheat.sliderbar
