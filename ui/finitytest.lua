@@ -1058,8 +1058,6 @@ function kometa.new(isdark, gprojectName, thinProject)
 						local minimum = data.min or 0
 						local maximum = data.max or 1
 						local default = data.default
-
-						print(default)
 						
 						local moveconnection
 						local releaseconnection
@@ -1100,7 +1098,7 @@ function kometa.new(isdark, gprojectName, thinProject)
 							Name = "Frame",
 							BackgroundColor3 = Color3.new(1, 1, 1),
 							BackgroundTransparency = 1,
-							Size = UDim2.new(0.5, 0, 1, 0),
+							Size = UDim2.new(default or 0.5, 0, 1, 0),
 							ZIndex = 2,
 							Image = "rbxassetid://3570695787",
 							ImageColor3 = theme.slider_color,
@@ -1113,9 +1111,7 @@ function kometa.new(isdark, gprojectName, thinProject)
 							local size = math.clamp(mouse.X - cheat.sliderbar.AbsolutePosition.X, 0, 150)
 							local percent = size / 150
 
-							cheat.value = default or math.floor((minimum + (maximum - minimum) * percent) * 100) / 100
-							print(cheat.value)
-							print(default)
+							cheat.value = math.floor((minimum + (maximum - minimum) * percent) * 100) / 100
 							cheat.numbervalue.Text = tostring(cheat.value) .. suffix
 
 							if callback then
