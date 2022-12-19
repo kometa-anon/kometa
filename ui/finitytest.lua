@@ -1052,11 +1052,12 @@ function kometa.new(isdark, gprojectName, thinProject)
 						cheat.background.Parent = cheat.container
 						cheat.textbox.Parent = cheat.container
 					elseif string.lower(kind) == "slider" then
-						cheat.value = data.default or 0
+						cheat.value = 0
 
 						local suffix = data.suffix or ""
 						local minimum = data.min or 0
 						local maximum = data.max or 1
+						local default = data.default
 						
 						local moveconnection
 						local releaseconnection
@@ -1110,7 +1111,7 @@ function kometa.new(isdark, gprojectName, thinProject)
 							local size = math.clamp(mouse.X - cheat.sliderbar.AbsolutePosition.X, 0, 150)
 							local percent = size / 150
 
-							cheat.value = math.floor((minimum + (maximum - minimum) * percent) * 100) / 100
+							cheat.value = default or math.floor((minimum + (maximum - minimum) * percent) * 100) / 100
 							cheat.numbervalue.Text = tostring(cheat.value) .. suffix
 
 							if callback then
