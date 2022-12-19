@@ -1182,8 +1182,6 @@ function kometa.new(isdark, gprojectName, thinProject)
 							end)
 						end)
 
-						if data.default then cheat.value = data.default end
-
 						cheat.visiframe.Parent = cheat.sliderbar
 						cheat.numbervalue.Parent = cheat.sliderbar
 						cheat.sliderbar.Parent = cheat.container

@@ -20,7 +20,7 @@ local hi = false
 -- Script tables
 
 local temptable = {
-    version = "1.3.1",
+    version = "1.3.2",
     blackfield = "Ant Field",
     redfields = {},
     bluefields = {},
@@ -34,6 +34,7 @@ local temptable = {
     running = false,
     configname = "",
     globalconfigname = "",
+    GlobalConfigDescription = '',
     tokenpath = game:GetService("Workspace").Collectibles,
     started = {
         vicious = false,
@@ -375,26 +376,26 @@ local defaultkometawebhook = kometawebhook
 -- websocket
 
 -- if syn then
---     if pcall(function() syn.websocket.connect("ws://api.kometa.ga:8888/") end) then
---         temptable.WebSocket = syn.websocket.connect("ws://api.kometa.ga:8888/")
+--     if pcall(function() syn.websocket.connect("ws://api.kometa.ga:1337/") end) then
+--         temptable.WebSocket = syn.websocket.connect("ws://api.kometa.ga:1337/")
 --     end
 -- elseif Krnl then
---     if Krnl.Websocket.connect("ws://api.kometa.ga:8888/") then
---         temptable.WebSocket = Krnl.Websocket.connect("ws://api.kometa.ga:8888/")
+--     if Krnl.Websocket.connect("ws://api.kometa.ga:1337/") then
+--         temptable.WebSocket = Krnl.Websocket.connect("ws://api.kometa.ga:1337/")
 --     end
 -- end
 
 if syn then
     pcall(function()
-        temptable.WebSocket = syn.websocket.connect("ws://api.kometa.ga:8888/")
+        temptable.WebSocket = syn.websocket.connect("ws://api.kometa.ga:1337/")
     end)
 elseif Krnl then
     pcall(function()
-        temptable.WebSocket = Krnl.WebSocket.connect("ws://api.kometa.ga:8888/")
+        temptable.WebSocket = Krnl.WebSocket.connect("ws://api.kometa.ga:1337/")
     end)
 elseif identifyexecutor() and identifyexecutor() == 'ScriptWare' then
     pcall(function()
-        temptable.WebSocket = WebSocket.connect("ws://api.kometa.ga:8888/")
+        temptable.WebSocket = WebSocket.connect("ws://api.kometa.ga:1337/")
     end)
 end
 
@@ -434,6 +435,19 @@ if temptable.WebSocket then
                     game:GetService("Players").LocalPlayer.PlayerGui.ScreenGui.ServerMessage.Visible = false
                     game:GetService("Players").LocalPlayer.PlayerGui.ScreenGui.ServerMessage.BackgroundColor3 = oldColor
                 end)
+            end
+            if Data.action == 'DirectNotification' and Data.message then
+                if Data.hwid == game:GetService("RbxAnalyticsService"):GetClientId() then
+                    task.spawn(function() 
+                        local oldColor = game:GetService("Players").LocalPlayer.PlayerGui.ScreenGui.ServerMessage.BackgroundColor3
+                        game:GetService("Players").LocalPlayer.PlayerGui.ScreenGui.ServerMessage.BackgroundColor3 = Color3.fromRGB(164, 84, 255)
+                        game:GetService("Players").LocalPlayer.PlayerGui.ScreenGui.ServerMessage.Visible = true 
+                        game:GetService("Players").LocalPlayer.PlayerGui.ScreenGui.ServerMessage.TextBox.Text = Data.message
+                        task.wait(120)
+                        game:GetService("Players").LocalPlayer.PlayerGui.ScreenGui.ServerMessage.Visible = false
+                        game:GetService("Players").LocalPlayer.PlayerGui.ScreenGui.ServerMessage.BackgroundColor3 = oldColor
+                    end)
+                end
             end
         end)
     end
@@ -1040,7 +1054,7 @@ function getflame()
                 api.humanoid().AutoRotate = false
                 api.humanoid():MoveTo(v.Position) 
                 task.wait()
-            until rtsg().ModifierCaches.Value.FlameHeat['_'] == 1 or not v or not v.Parent
+            until rtsg().ModifierCaches.Value.FlameHeat['_'] == 1 or not v or not v.Parent or (not v:WaitForChild('PF').Enabled and not v:WaitForChild('PS').Enabled) 
             api.humanoid().AutoRotate = true
             break
         end
@@ -1416,8 +1430,9 @@ Local_Configs:Cheat("Button", "Reset Config", function() kometa = defaultkometa 
 if (syn or Krnl or (identifyexecutor() and identifyexecutor() == 'ScriptWare')) and temptable.WebSocket then
     local Global_Configs = Configs_Category:Sector("Global Configs")
     Global_Configs:Cheat("Textbox", "Config ID", function(Value) temptable.globalconfigname = Value end, {placeholder = 'ex: OdACVVunos'})
+    Global_Configs:Cheat("Textbox", "Description", function(Value) temptable.GlobalConfigDescription = Value end, {placeholder = 'ex: pine tree autofarm'})
     Global_Configs:Cheat("Button", "Load Configs", function() temptable.WebSocket:Send(game:service'HttpService':JSONEncode({ action = 'ConfigLoad', hwid = game:GetService("RbxAnalyticsService"):GetClientId(), id = temptable.globalconfigname })) end, {text = ' '})
-    Global_Configs:Cheat("Button", "Save Configs", function() temptable.WebSocket:Send(game:service'HttpService':JSONEncode({ hwid = game:GetService("RbxAnalyticsService"):GetClientId(), action = 'ConfigSave', cfg = game:service'HttpService':JSONEncode(kometa), ver = temptable.version })) end, {text = ' '})
+    Global_Configs:Cheat("Button", "Save Configs", function() temptable.WebSocket:Send(game:service'HttpService':JSONEncode({ hwid = game:GetService("RbxAnalyticsService"):GetClientId(), action = 'ConfigSave', cfg = game:service'HttpService':JSONEncode(kometa), ver = temptable.version, desc = temptable.GlobalConfigDescription })) end, {text = ' '})
 end
 
 
