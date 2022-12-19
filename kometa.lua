@@ -376,26 +376,26 @@ local defaultkometawebhook = kometawebhook
 -- websocket
 
 -- if syn then
---     if pcall(function() syn.websocket.connect("ws://api.kometa.ga:1337/") end) then
---         temptable.WebSocket = syn.websocket.connect("ws://api.kometa.ga:1337/")
+--     if pcall(function() syn.websocket.connect("ws://api.kometa.ga:8888/") end) then
+--         temptable.WebSocket = syn.websocket.connect("ws://api.kometa.ga:8888/")
 --     end
 -- elseif Krnl then
---     if Krnl.Websocket.connect("ws://api.kometa.ga:1337/") then
---         temptable.WebSocket = Krnl.Websocket.connect("ws://api.kometa.ga:1337/")
+--     if Krnl.Websocket.connect("ws://api.kometa.ga:8888/") then
+--         temptable.WebSocket = Krnl.Websocket.connect("ws://api.kometa.ga:8888/")
 --     end
 -- end
 
 if syn then
     pcall(function()
-        temptable.WebSocket = syn.websocket.connect("ws://api.kometa.ga:1337/")
+        temptable.WebSocket = syn.websocket.connect("ws://api.kometa.ga:8888/")
     end)
 elseif Krnl then
     pcall(function()
-        temptable.WebSocket = Krnl.WebSocket.connect("ws://api.kometa.ga:1337/")
+        temptable.WebSocket = Krnl.WebSocket.connect("ws://api.kometa.ga:8888/")
     end)
 elseif identifyexecutor() and identifyexecutor() == 'ScriptWare' then
     pcall(function()
-        temptable.WebSocket = WebSocket.connect("ws://api.kometa.ga:1337/")
+        temptable.WebSocket = WebSocket.connect("ws://api.kometa.ga:8888/")
     end)
 end
 
