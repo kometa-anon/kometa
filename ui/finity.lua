@@ -1057,6 +1057,7 @@ function kometa.new(isdark, gprojectName, thinProject)
 						local suffix = data.suffix or ""
 						local minimum = data.min or 0
 						local maximum = data.max or 1
+						local default = data.default
 						
 						local moveconnection
 						local releaseconnection
@@ -1097,7 +1098,7 @@ function kometa.new(isdark, gprojectName, thinProject)
 							Name = "Frame",
 							BackgroundColor3 = Color3.new(1, 1, 1),
 							BackgroundTransparency = 1,
-							Size = UDim2.new(0.5, 0, 1, 0),
+							Size = UDim2.new(math.clamp(default / maximum, 0, 1) or 0.5, 0, 1, 0),
 							ZIndex = 2,
 							Image = "rbxassetid://3570695787",
 							ImageColor3 = theme.slider_color,

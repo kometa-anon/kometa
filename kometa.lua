@@ -20,7 +20,7 @@ local hi = false
 -- Script tables
 
 local temptable = {
-    version = "1.3.2",
+    version = "1.3.3",
     blackfield = "Ant Field",
     redfields = {},
     bluefields = {},
@@ -1149,7 +1149,7 @@ links:Cheat("Button", "Token IDs", function() setclipboard("https://pastebin.com
 
 local farm = farmtab:Sector("Farming")
 farm:Cheat("Dropdown", "Field", function(Option) temptable.tokensfarm = false kometa.vars.field = Option end, {options=fieldstable})
-farm:Cheat("Slider", "Convert at:", function(Value) kometa.vars.convertat = Value end, {min = 0, max = 100, suffix = "%"})
+farm:Cheat("Slider", "Convert at:", function(Value) kometa.vars.convertat = Value end, {min = 0, max = 100, suffix = "%", default = 100})
 farm:Cheat("Checkbox", "Autofarm", function(State) kometa.toggles.autofarm = not kometa.toggles.autofarm end)
 farm:Cheat("Checkbox", "Auto Sprinkler ⏳", function(State) kometa.toggles.autosprinkler = State end)
 farm:Cheat("Checkbox", "Autodig", function(State) kometa.toggles.autodig = State end)
@@ -1189,19 +1189,19 @@ farmsecond:Cheat("Checkbox", "Face Balloons", function(State) kometa.toggles.fac
 local psec1 = planterstab:Sector("First Planter")
 psec1:Cheat("Dropdown", "Planter", function(Option) kometa.planterssettings[1].Type = Option end, {options=require(game:GetService("ReplicatedStorage").PlanterTypes).INVENTORY_ORDER})
 psec1:Cheat("Dropdown", "Field", function(Option) kometa.planterssettings[1].field = Option end, {options=fieldstable})
-psec1:Cheat("Slider", "Growth Percent", function(Value) kometa.planterssettings[1].growth = (Value / 100) or 1 / 100 end, {min = 0, max = 100, suffix = "%"})
+psec1:Cheat("Slider", "Growth Percent", function(Value) kometa.planterssettings[1].growth = (Value / 100) or 1 / 100 end, {min = 0, max = 100, suffix = "%", default = 100})
 psec1:Cheat("Checkbox", "Auto Plant", function(State) kometa.planterssettings[1].enabled = State end)
 
 local psec2 = planterstab:Sector("Second Planter")
 psec2:Cheat("Dropdown", "Planter", function(Option) kometa.planterssettings[2].Type = Option end, {options=require(game:GetService("ReplicatedStorage").PlanterTypes).INVENTORY_ORDER})
 psec2:Cheat("Dropdown", "Field", function(Option) kometa.planterssettings[2].field = Option end, {options=fieldstable})
-psec2:Cheat("Slider", "Growth Percent", function(Value) kometa.planterssettings[2].growth = (Value / 100) or 1 / 100 end, {min = 0, max = 100, suffix = "%"})
+psec2:Cheat("Slider", "Growth Percent", function(Value) kometa.planterssettings[2].growth = (Value / 100) or 1 / 100 end, {min = 0, max = 100, suffix = "%", default = 100})
 psec2:Cheat("Checkbox", "Auto Plant", function(State) kometa.planterssettings[2].enabled = State end)
 
 local psec3 = planterstab:Sector("Third Planter")
 psec3:Cheat("Dropdown", "Planter", function(Option) kometa.planterssettings[3].Type = Option end, {options=require(game:GetService("ReplicatedStorage").PlanterTypes).INVENTORY_ORDER})
 psec3:Cheat("Dropdown", "Field", function(Option) kometa.planterssettings[3].field = Option end, {options=fieldstable})
-psec3:Cheat("Slider", "Growth Percent", function(Value) kometa.planterssettings[3].growth = (Value / 100) or 1 / 100 end, {min = 0, max = 100, suffix = "%"})
+psec3:Cheat("Slider", "Growth Percent", function(Value) kometa.planterssettings[3].growth = (Value / 100) or 1 / 100 end, {min = 0, max = 100, suffix = "%", default = 100})
 psec3:Cheat("Checkbox", "Auto Plant", function(State) kometa.planterssettings[3].enabled = State end)
 
 local mobkill = combtab:Sector("Combat")
@@ -1316,8 +1316,8 @@ farmsettings:Cheat("Checkbox", "Don't Walk In Field", function(State) kometa.tog
 farmsettings:Cheat("Checkbox", "Convert Hive Balloon", function(State) kometa.toggles.convertballoons = State end)
 farmsettings:Cheat("Checkbox", "Don't Farm Tokens", function(State) kometa.toggles.donotfarmtokens = State end)
 farmsettings:Cheat("Checkbox", "Enable Token Blacklisting", function(State) kometa.toggles.enabletokenblacklisting = State end)
-farmsettings:Cheat("Slider", "Walk Speed", function(Value) kometa.vars.walkspeed = Value end, {min = 0, max = 120, suffix = " studs"})
-farmsettings:Cheat("Slider", "Jump Power", function(Value) kometa.vars.jumppower = Value end, {min = 0, max = 120, suffix = " studs"})
+farmsettings:Cheat("Slider", "Walk Speed", function(Value) kometa.vars.walkspeed = Value end, {min = 0, max = 120, suffix = " studs", default = 70})
+farmsettings:Cheat("Slider", "Jump Power", function(Value) kometa.vars.jumppower = Value end, {min = 0, max = 120, suffix = " studs", default = 70})
 local raresettings = setttab:Sector("Tokens Settings")
 raresettings:Cheat("Textbox", "Asset ID", function(Value) rarename = Value end, {placeholder = 'rbxassetid'})
 raresettings:Cheat("Button", "Add Rare", function()
