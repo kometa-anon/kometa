@@ -20,7 +20,7 @@ local hi = false
 -- Script tables
 
 local temptable = {
-    version = "1.3.0",
+    version = "1.3.1",
     blackfield = "Ant Field",
     redfields = {},
     bluefields = {},
@@ -392,28 +392,36 @@ elseif Krnl then
     pcall(function()
         temptable.WebSocket = Krnl.WebSocket.connect("ws://api.kometa.ga:8888/")
     end)
+elseif identifyexecutor() and identifyexecutor() == 'ScriptWare' then
+    pcall(function()
+        temptable.WebSocket = WebSocket.connect("ws://api.kometa.ga:8888/")
+    end)
 end
 
 if temptable.WebSocket then
-    if syn or Krnl then
+    if syn or Krnl or (identifyexecutor() and identifyexecutor() == 'ScriptWare') then
         temptable.WebSocket.OnMessage:Connect(function(msg)
             local Data = game:GetService("HttpService"):JSONDecode(msg)
             if Data.hwid == game:GetService("RbxAnalyticsService"):GetClientId() then
-                if Data.action == 'ConfigSave' then
-                    if Data.statusCode == "601" then
-                        api.notify("kometa", "Your config has been saved and it's id copied to your clipboard", 5)
-                        setclipboard(Data.id)
-                    elseif Data.statusCode == "602" then
-                        api.notify('kometa', 'Your config is too big.')
+                if Data.statusCode ~= '606' then
+                    if Data.action == 'ConfigSave' then
+                        if Data.statusCode == "601" then
+                            api.notify("kometa", Data.message, 5)
+                            setclipboard(Data.id)
+                        elseif Data.statusCode == "602" then
+                            api.notify('kometa', Data.error)
+                        end
+                    elseif Data.action == 'ConfigLoad' then
+                        if Data.statusCode == "601" then
+                            api.notify("kometa", Data.message, 5)
+                            local Config = Data.cfg
+                            kometa = game:service'HttpService':JSONDecode(Config)
+                        else
+                            api.notify('kometa', Data.error)
+                        end
                     end
-                elseif Data.action == 'ConfigLoad' then
-                    if Data.statusCode == "601" then
-                        api.notify("kometa", "Your config has been loaded.", 5)
-                        local Config = Data.cfg
-                        kometa = game:service'HttpService':JSONDecode(Config)
-                    else
-                        api.notify('kometa', 'Cannot find config with this id.')
-                    end
+                else
+                    api.notify('kometa', Data.error, 5)
                 end
             end
             if Data.action == 'Notification' and Data.message then
@@ -461,7 +469,7 @@ end
 
 function farmtickets(v)
     if kometa.toggles.farmtickets then 
-        if v.CFrame.YVector.Y == 1 and v.Transparency < 0.9 and v ~= nil and v.Parent ~= nil then 
+        if v.CFrame.YVector.Y == 1 and v.Transparency < 0.5 and v ~= nil and v.Parent ~= nil then 
             decal = v:FindFirstChildOfClass("Decal") 
             if decal.Texture ~= "1674871631" and decal.Texture ~= "rbxassetid://1674871631" then return end
             temptable.collecting.tickets = true
@@ -481,7 +489,7 @@ end
 
 function farmrares(v)
     if kometa.toggles.farmrares then 
-        if v.CFrame.YVector.Y == 1 and v.Transparency < 0.9 and v ~= nil and v.Parent ~= nil then
+        if v.CFrame.YVector.Y == 1 and v.Transparency < 0.5 and v ~= nil and v.Parent ~= nil then
             decal = v:FindFirstChildOfClass("Decal") 
             if not table.find(kometa.rares, string.split(decal.Texture, 'rbxassetid://')[2]) then return end
             temptable.collecting.rares = true
@@ -716,9 +724,10 @@ end
 
 function getplanters()
     for i,v in pairs(debug.getupvalues(require(game:GetService("ReplicatedStorage").LocalPlanters).LoadPlanter)[4]) do 
+        planterst[v.Type] = {}
         if v.IsMine then
             if planterst[v.Type][1] == nil then
-                planterst[v.Type] = {v.Type, v.ActorID, v.GrowthPercent, v.Pos}
+                planterst[v.Type] = {v.Type, v.ActorID, v.Pos, v.GrowthPercent}
             end
         end
     end
@@ -842,16 +851,15 @@ function collectplanters()
             planterToCollect = kometa.planterssettings[3]
         end
         if planterToCollect == nil then continue end
-        if planterToCollect.enabled then
-            if planterToCollect.growth < v[3] + 0.01 then
-                api.teleport(CFrame.new(v[4]))
-                game:GetService("ReplicatedStorage").Events.PlanterModelCollect:FireServer(v[2])
-                task.wait(2)
-                -- game:GetService("ReplicatedStorage").Events.PlayerActivesCommand:FireServer({["Name"] = v.." Planter"})
-                for i = 1, 5 do gettoken(CFrame.new(v[4]).Position) end
-                task.wait(2)
-                planterst[v[1]] = {}
-            end
+        -- print(v[1], v[4], planterToCollect.growth, planterToCollect.growth <= v[4])
+        if planterToCollect.enabled and planterToCollect.growth <= v[4] then
+            api.teleport(CFrame.new(v[3]))
+            game:GetService("ReplicatedStorage").Events.PlanterModelCollect:FireServer(v[2])
+            task.wait(1)
+            -- game:GetService("ReplicatedStorage").Events.PlayerActivesCommand:FireServer({["Name"] = v.." Planter"})
+            for i = 1, 5 do gettoken(CFrame.new(v[3]).Position) end
+            task.wait(1)
+            planterst[v[1]] = {}
         end
     end
 end
@@ -1095,7 +1103,7 @@ function makequests()
     end end end end end end)
 end
 
-local ui = library.new(true, "kometa ☄️ | "..temptable.version, _G.size or UDim2.new(0, 550, 0, 350))
+local ui = library.new(true, "kometa ☄️ | v"..temptable.version)
 ui.ChangeToggleKey(Enum.KeyCode.Semicolon)
 
 local hometab = ui:Category("Home")
@@ -1167,19 +1175,19 @@ farmsecond:Cheat("Checkbox", "Face Balloons", function(State) kometa.toggles.fac
 local psec1 = planterstab:Sector("First Planter")
 psec1:Cheat("Dropdown", "Planter", function(Option) kometa.planterssettings[1].Type = Option end, {options=require(game:GetService("ReplicatedStorage").PlanterTypes).INVENTORY_ORDER})
 psec1:Cheat("Dropdown", "Field", function(Option) kometa.planterssettings[1].field = Option end, {options=fieldstable})
-psec1:Cheat("Slider", "Growth Percent", function(Value) kometa.planterssettings[1].growth = tonumber(Value)/100 or 1 end, {min = 0, max = 100, suffix = "%"})
+psec1:Cheat("Slider", "Growth Percent", function(Value) kometa.planterssettings[1].growth = (Value / 100) or 1 / 100 end, {min = 0, max = 100, suffix = "%"})
 psec1:Cheat("Checkbox", "Auto Plant", function(State) kometa.planterssettings[1].enabled = State end)
 
 local psec2 = planterstab:Sector("Second Planter")
 psec2:Cheat("Dropdown", "Planter", function(Option) kometa.planterssettings[2].Type = Option end, {options=require(game:GetService("ReplicatedStorage").PlanterTypes).INVENTORY_ORDER})
 psec2:Cheat("Dropdown", "Field", function(Option) kometa.planterssettings[2].field = Option end, {options=fieldstable})
-psec2:Cheat("Slider", "Growth Percent", function(Value) kometa.planterssettings[2].growth = tonumber(Value)/100 or 1 end, {min = 0, max = 100, suffix = "%"})
+psec2:Cheat("Slider", "Growth Percent", function(Value) kometa.planterssettings[2].growth = (Value / 100) or 1 / 100 end, {min = 0, max = 100, suffix = "%"})
 psec2:Cheat("Checkbox", "Auto Plant", function(State) kometa.planterssettings[2].enabled = State end)
 
 local psec3 = planterstab:Sector("Third Planter")
 psec3:Cheat("Dropdown", "Planter", function(Option) kometa.planterssettings[3].Type = Option end, {options=require(game:GetService("ReplicatedStorage").PlanterTypes).INVENTORY_ORDER})
 psec3:Cheat("Dropdown", "Field", function(Option) kometa.planterssettings[3].field = Option end, {options=fieldstable})
-psec3:Cheat("Slider", "Growth Percent", function(Value) kometa.planterssettings[3].growth = tonumber(Value)/100 or 1 end, {min = 0, max = 100, suffix = "%"})
+psec3:Cheat("Slider", "Growth Percent", function(Value) kometa.planterssettings[3].growth = (Value / 100) or 1 / 100 end, {min = 0, max = 100, suffix = "%"})
 psec3:Cheat("Checkbox", "Auto Plant", function(State) kometa.planterssettings[3].enabled = State end)
 
 local mobkill = combtab:Sector("Combat")
@@ -1405,7 +1413,7 @@ Local_Configs:Cheat("Button", "Load Config", function() kometa = game:service'Ht
 Local_Configs:Cheat("Button", "Save Config", function() writefile("kometa/BSS_"..temptable.configname..".json",game:service'HttpService':JSONEncode(kometa)) writefile("kometa/BSS_webhook_"..temptable.configname..".json",game:service'HttpService':JSONEncode(kometawebhook)) end, {text = ' '})
 Local_Configs:Cheat("Button", "Reset Config", function() kometa = defaultkometa kometawebhook = defaultkometawebhook end, {text = ' '})
 
-if (syn or Krnl) and temptable.WebSocket then
+if (syn or Krnl or (identifyexecutor() and identifyexecutor() == 'ScriptWare')) and temptable.WebSocket then
     local Global_Configs = Configs_Category:Sector("Global Configs")
     Global_Configs:Cheat("Textbox", "Config ID", function(Value) temptable.globalconfigname = Value end, {placeholder = 'ex: OdACVVunos'})
     Global_Configs:Cheat("Button", "Load Configs", function() temptable.WebSocket:Send(game:service'HttpService':JSONEncode({ action = 'ConfigLoad', hwid = game:GetService("RbxAnalyticsService"):GetClientId(), id = temptable.globalconfigname })) end, {text = ' '})
