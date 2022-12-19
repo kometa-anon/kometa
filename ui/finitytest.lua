@@ -1052,7 +1052,7 @@ function kometa.new(isdark, gprojectName, thinProject)
 						cheat.background.Parent = cheat.container
 						cheat.textbox.Parent = cheat.container
 					elseif string.lower(kind) == "slider" then
-						cheat.value = 0
+						cheat.value = data.defalt or 0
 
 						local suffix = data.suffix or ""
 						local minimum = data.min or 0
