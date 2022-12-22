@@ -20,7 +20,7 @@ local hi = false
 -- Script tables
 
 local temptable = {
-    version = "1.3.4",
+    version = "1.3.5",
     blackfield = "Ant Field",
     redfields = {},
     bluefields = {},
@@ -484,13 +484,12 @@ end
 
 function farmtickets(v)
     if kometa.toggles.farmtickets then 
-        if v.CFrame.YVector.Y == 1 and v.Transparency < 0.5 and v ~= nil and v.Parent ~= nil then 
+        if v.CFrame.YVector.Y == 1 and v.Transparency == 0 and v ~= nil and v.Parent ~= nil then 
             decal = v:FindFirstChildOfClass("Decal") 
             if decal.Texture ~= "1674871631" and decal.Texture ~= "rbxassetid://1674871631" then return end
             temptable.collecting.tickets = true
             temptable.float = true
-            game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(v.Position) * CFrame.new(20, 0, 0) 
-            task.wait(.1) 
+            game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(v.Position) * CFrame.new(20, -3, 0) 
             repeat 
                 task.wait() 
                 api.humanoid().WalkSpeed = math.random(20, 30) 
@@ -498,18 +497,18 @@ function farmtickets(v)
             until not v.Parent or v.CFrame.YVector.Y ~= 1 
             temptable.collecting.tickets = false
             if temptable.float then temptable.float = false end
+            task.wait(.1)
         end
     end 
 end
 
 function farmrares(v)
     if kometa.toggles.farmrares then 
-        if v.CFrame.YVector.Y == 1 and v.Transparency < 0.5 and v ~= nil and v.Parent ~= nil then
+        if v.CFrame.YVector.Y == 1 and v.Transparency == 0 and v ~= nil and v.Parent ~= nil then
             decal = v:FindFirstChildOfClass("Decal") 
             if not table.find(kometa.rares, string.split(decal.Texture, 'rbxassetid://')[2]) then return end
             temptable.collecting.rares = true
-            game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(v.Position) * CFrame.new(20, 0, 0) 
-            task.wait(.1) 
+            game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(v.Position) * CFrame.new(20, -3, 0) 
             temptable.float = true
             repeat 
                 task.wait() 
@@ -518,6 +517,7 @@ function farmrares(v)
             until not v.Parent or v.CFrame.YVector.Y ~= 1 
             temptable.collecting.rares = false
             if temptable.float then temptable.float = false end
+            task.wait(.1)
         end 
     end
 end
@@ -1151,7 +1151,7 @@ links:Cheat("Button", "Token IDs", function() setclipboard("https://pastebin.com
 local farm = farmtab:Sector("Farming")
 farm:Cheat("Dropdown", "Field", function(Option) temptable.tokensfarm = false kometa.vars.field = Option end, {options=fieldstable})
 farm:Cheat("Slider", "Convert at:", function(Value) kometa.vars.convertat = Value end, {min = 0, max = 100, suffix = "%", default = 100})
-farm:Cheat("Checkbox", "Autofarm", function(State) kometa.toggles.autofarm = not kometa.toggles.autofarm end)
+farm:Cheat("Checkbox", "Autofarm", function(State) kometa.toggles.autofarm = State end)
 farm:Cheat("Checkbox", "Auto Sprinkler ⏳", function(State) kometa.toggles.autosprinkler = State end)
 farm:Cheat("Checkbox", "Autodig", function(State) kometa.toggles.autodig = State end)
 farm:Cheat("Checkbox", "Farm Bubbles", function(State) kometa.toggles.farmbubbles = State end)
