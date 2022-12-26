@@ -20,7 +20,7 @@ local hi = false
 -- Script tables
 
 local temptable = {
-    version = "1.5.0",
+    version = "1.5.1",
     blackfield = "Ant Field",
     redfields = {},
     bluefields = {},
@@ -1280,6 +1280,7 @@ amks:Cheat("Textbox",'Kill Mobs After x Convertions', function(Value) kometa.var
 
 local statssector = statstab:Sector("Statistics")
 statssector:Cheat("Label", "Gained Honey")
+statssector:Cheat("Label", "Honey Per Hour")
 statssector:Cheat("Label", "Elapsed Time")
 statssector:Cheat("Label", "Farmed Sprouts")
 statssector:Cheat("Label", "Killed Vicious")
@@ -1872,12 +1873,13 @@ task.spawn(function() while task.wait(1) do
     if kometa.toggles.clock then game:GetService("ReplicatedStorage").Events.ToyEvent:FireServer("Wealth Clock") end
     if kometa.toggles.freeantpass then game:GetService("ReplicatedStorage").Events.ToyEvent:FireServer("Free Ant Pass Dispenser") end
     if kometa.toggles.freerobopass then game:GetService("ReplicatedStorage").Events.ToyEvent:FireServer("Free Robo Pass Dispenser") end
-    game.CoreGui.kometaUI.Container.Categories.Statistics.L["Statistics"].Container["Gained Honey"].Title.Text = "Gained Honey: "..api.suffixstring(temptable.honeycurrent - temptable.honeystart)
-    game.CoreGui.kometaUI.Container.Categories.Statistics.L["Statistics"].Container["Elapsed Time"].Title.Text = "Elapsed Time: "..api.toHMS(temptable.stats.runningfor)
-    game.CoreGui.kometaUI.Container.Categories.Statistics.L["Statistics"].Container["Farmed Sprouts"].Title.Text = "Farmed Sprouts: "..temptable.stats.farmedsprouts
-    game.CoreGui.kometaUI.Container.Categories.Statistics.L["Statistics"].Container["Killed Windy"].Title.Text = "Killed Windy: "..temptable.stats.killedwindy
-    game.CoreGui.kometaUI.Container.Categories.Statistics.L["Statistics"].Container["Killed Vicious"].Title.Text = "Killed Vicious: "..temptable.stats.killedvicious
-    game.CoreGui.kometaUI.Container.Categories.Statistics.L["Statistics"].Container["Farmed Ants"].Title.Text = "Farmed Ants: "..temptable.stats.farmedants
+    game.CoreGui.kometaUI.Container.Categories.Statistics:FindFirstChild("Statistics", true).Container["Gained Honey"].Title.Text = "Gained Honey: "..api.suffixstring(temptable.honeycurrent - temptable.honeystart)
+    game.CoreGui.kometaUI.Container.Categories.Statistics:FindFirstChild("Statistics", true).Container["Honey Per Hour"].Title.Text = "Honey Per Hour: "..api.suffixstring((temptable.honeycurrent - temptable.honeystart)/(temptable.stats.runningfor/3600))
+    game.CoreGui.kometaUI.Container.Categories.Statistics:FindFirstChild("Statistics", true).Container["Elapsed Time"].Title.Text = "Elapsed Time: "..api.toHMS(temptable.stats.runningfor)
+    game.CoreGui.kometaUI.Container.Categories.Statistics:FindFirstChild("Statistics", true).Container["Farmed Sprouts"].Title.Text = "Farmed Sprouts: "..temptable.stats.farmedsprouts
+    game.CoreGui.kometaUI.Container.Categories.Statistics:FindFirstChild("Statistics", true).Container["Killed Windy"].Title.Text = "Killed Windy: "..temptable.stats.killedwindy
+    game.CoreGui.kometaUI.Container.Categories.Statistics:FindFirstChild("Statistics", true).Container["Killed Vicious"].Title.Text = "Killed Vicious: "..temptable.stats.killedvicious
+    game.CoreGui.kometaUI.Container.Categories.Statistics:FindFirstChild("Statistics", true).Container["Farmed Ants"].Title.Text = "Farmed Ants: "..temptable.stats.farmedants
     if kometa.toggles.visualnight then
         game:GetService("Lighting").TimeOfDay = '00:00:00'
         game:GetService("Lighting").Brightness = 0.03
