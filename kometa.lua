@@ -490,7 +490,7 @@ function farmtickets(v)
             if decal.Texture ~= "1674871631" and decal.Texture ~= "rbxassetid://1674871631" then return end
             temptable.collecting.tickets = true
             temptable.float = true
-            game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(v.Position) * CFrame.new(20, -3, 0) 
+            game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(v.Position) * CFrame.new(math.random(20, 30), -3, 0) 
             repeat 
                 task.wait() 
                 api.humanoid().WalkSpeed = 25
@@ -507,7 +507,7 @@ function farmsnowflakes(v)
     if kometa.toggles.farmsnowflakes then
         if v:FindFirstChildOfClass("Decal") and v:FindFirstChildOfClass("Decal").Texture == "rbxassetid://6087969886" and v.Transparency == 0 then
             -- api.humanoidrootpart().CFrame = CFrame.new(v.Position.X, v.Position.Y+3, v.Position.Z)
-            game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(v.Position) * CFrame.new(20, -3, 0) 
+            game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(v.Position) * CFrame.new(math.random(20, 30), -3, 0) 
             temptable.float = true
             repeat 
                 task.wait() 
@@ -526,7 +526,7 @@ function farmrares(v)
             decal = v:FindFirstChildOfClass("Decal") 
             if not table.find(kometa.rares, string.split(decal.Texture, 'rbxassetid://')[2]) then return end
             temptable.collecting.rares = true
-            game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(v.Position) * CFrame.new(20, -3, 0) 
+            game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(v.Position) * CFrame.new(math.random(20, 30), -3, 0) 
             temptable.float = true
             repeat 
                 task.wait() 
