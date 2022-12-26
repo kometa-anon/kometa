@@ -493,7 +493,7 @@ function farmtickets(v)
             game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(v.Position) * CFrame.new(20, -3, 0) 
             repeat 
                 task.wait() 
-                api.humanoid().WalkSpeed = math.random(20, 30) 
+                api.humanoid().WalkSpeed = 25
                 api.walkTo(v.Position)
             until not v.Parent or v.CFrame.YVector.Y ~= 1 or not v.Transparency == 0 or (v.Position-api.humanoidrootpart().Position).Magnitude > 50
             temptable.collecting.tickets = false
@@ -511,7 +511,7 @@ function farmsnowflakes(v)
             temptable.float = true
             repeat 
                 task.wait() 
-                api.humanoid().WalkSpeed = math.random(20, 30) 
+                api.humanoid().WalkSpeed = 25
                 api.walkTo(v.Position)
             until not v.Parent or v.CFrame.YVector.Y ~= 1 or not v.Transparency == 0 or (v.Position-api.humanoidrootpart().Position).Magnitude > 50
             if temptable.float then temptable.float = false end
@@ -530,7 +530,7 @@ function farmrares(v)
             temptable.float = true
             repeat 
                 task.wait() 
-                api.humanoid().WalkSpeed = math.random(20, 30)
+                api.humanoid().WalkSpeed = 25
                 api.walkTo(v.Position)
             until not v.Parent or v.CFrame.YVector.Y ~= 1 or not v.Transparency == 0 or (v.Position-api.humanoidrootpart().Position).Magnitude > 50
             temptable.collecting.rares = false
