@@ -20,7 +20,7 @@ local hi = false
 -- Script tables
 
 local temptable = {
-    version = "1.4.0",
+    version = "1.5.0",
     blackfield = "Ant Field",
     redfields = {},
     bluefields = {},
@@ -208,8 +208,8 @@ local cocopad = Instance.new("Part", game:GetService("Workspace"))
 cocopad.Name = "Coconut Part"
 cocopad.Anchored = true
 cocopad.Transparency = 1
-cocopad.Size = Vector3.new(10, 1, 10)
-cocopad.Position = Vector3.new(-307.52117919922, 105.91863250732, 467.86791992188)
+cocopad.Size = Vector3.new(135, 1, 100)
+cocopad.Position = Vector3.new(-265.52117919922, 105.91863250732, 480.86791992188)
 
 local popfolder = Instance.new("Folder", game:GetService("Workspace").Particles)
 popfolder.Name = "PopStars"
@@ -278,12 +278,12 @@ local kometa = {
         tptonpc = false,
         donotfarmtokens = false,
         convertballoons = false,
-        --autostockings = false,
-        --autosamovar = false,
-        --autoonettart = false,
-        --autocandles = false,
-        --autofeast = false,
-        --autoplanters = false,
+        autostockings = false,
+        autosamovar = false,
+        autoonettart = false,
+        autocandles = false,
+        autofeast = false,
+        autoplanters = false,
         autokillmobs = false,
         autoant = false,
         killwindy = false,
@@ -299,6 +299,8 @@ local kometa = {
         visualnight = false,
         convertminutestoggle = false,
         randomizespeed = false,
+        farmglitchedtokens = false,
+        freerobopass = false
     },
     vars = {
         field = "Ant Field",
@@ -512,6 +514,7 @@ function farmsnowflakes(v)
             game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(v.Position) * CFrame.new(math.random(20, 30), -3, math.random(-10, 10)) 
             temptable.float = true
             local reenablespeed = kometa.toggles.loopspeed
+            kometa.toggles.loopspeed = false
             repeat 
                 task.wait() 
                 api.humanoid().WalkSpeed = 25
@@ -544,6 +547,20 @@ function farmrares(v)
             if temptable.float then temptable.float = false end
             task.wait(math.random(1, 5)/10)
         end 
+    end
+end
+
+function farmcococrab(v)
+    if kometa.toggles.traincrab then
+        if v.CFrame.YVector.Y == 1 and v.Transparency == 0 and v ~= nil and v.Parent ~= nil then
+            if (v.Position - CFrame.new(-256, 110, 475).Position).Magnitude < 50 then
+                repeat
+                    task.wait()
+                    api.walkTo(v.Position)
+                until not v.Parent or v.CFrame.YVector.Y ~= 1 or not v
+                api.teleport(CFrame.new(-256, 110, 475))
+            end
+        end
     end
 end
 
@@ -1087,6 +1104,23 @@ function getflame()
     end
 end
 
+function getglitchtoken()
+    for i,v in pairs(game:GetService("Workspace").Camera.DupedTokens:GetChildren()) do
+        if tonumber((v.Position-game.Players.LocalPlayer.Character.HumanoidRootPart.Position).magnitude) < temptable.magnitude/1.4 then
+            if kometa.toggles.faceballoons and findballoon() then api.humanoidrootpart().CFrame = CFrame.lookAt(api.humanoidrootpart().Position, Vector3.new(findballoon().BalloonRoot.Position.X, api.humanoidrootpart().Position.Y, findballoon().BalloonRoot.Position.Z)) end
+            if kometa.toggles.faceflames and findclosestflame() then api.humanoidrootpart().CFrame = CFrame.lookAt(api.humanoidrootpart().Position, Vector3.new(findclosestflame().Position.X, api.humanoidrootpart().Position.Y, findclosestflame().Position.Z)) end
+            if kometa.toggles.randomizespeed then api.humanoid().WalkSpeed = math.random(30, 70) end
+            repeat
+                api.humanoid().AutoRotate = false
+                api.humanoid():MoveTo(v.Position)
+                task.wait()
+            until not v or not v.Parent
+            api.humanoid().AutoRotate = true
+            break
+        end
+    end
+end
+
 function avoidmob()
     for i,v in next, game:GetService("Workspace").Monsters:GetChildren() do
         if v:FindFirstChild("Head") then
@@ -1185,6 +1219,7 @@ farm:Cheat("Checkbox", "Farm Flames", function(State) kometa.toggles.farmflame =
 farm:Cheat("Checkbox", "Farm Coconuts & Shower", function(State) kometa.toggles.farmcoco = State end)
 farm:Cheat("Checkbox", "Farm Precise Crosshairs", function(State) kometa.toggles.collectcrosshairs = State end)
 farm:Cheat("Checkbox", "Farm Fuzzy Bombs", function(State) kometa.toggles.farmfuzzy = State end)
+farm:Cheat("Checkbox", "Farm Glitched Tokens", function(State) kometa.toggles.farmglitchedtokens = State end)
 farm:Cheat("Checkbox", "Farm Under Balloons", function(State) kometa.toggles.farmballoons = State end)
 farm:Cheat("Checkbox", "Farm Under Clouds", function(State) kometa.toggles.farmclouds = State end)
 farm:Cheat("Checkbox", "Face Flames", function(State) kometa.toggles.faceflames = State end)
@@ -1196,6 +1231,7 @@ farmsecond:Cheat("Checkbox", "Auto Dispenser ⚙", function(State) kometa.toggle
 farmsecond:Cheat("Checkbox", "Auto Field Boosters ⚙", function(State) kometa.toggles.autoboosters = State end)
 farmsecond:Cheat("Checkbox", "Auto Wealth Clock", function(State) kometa.toggles.clock = State end)
 farmsecond:Cheat("Checkbox", "Auto Free Antpasses", function(State) kometa.toggles.freeantpass = State end)
+farmsecond:Cheat("Checkbox", "Auto Free Robo Passes", function(State) kometa.toggles.freerobopass = State end)
 farmsecond:Cheat("Checkbox", "Auto Special Sprout Summoner", function(State) kometa.toggles.autospawnsprout = State end)
 farmsecond:Cheat("Checkbox", "Auto Honeystorm", function(State) kometa.toggles.honeystorm = State end)
 farmsecond:Cheat("Checkbox", "Auto Gingerbread Bears", function(State) kometa.toggles.collectgingerbreads = State end)
@@ -1230,7 +1266,7 @@ psec3:Cheat("Slider", "Growth Percent", function(Value) kometa.planterssettings[
 psec3:Cheat("Checkbox", "Auto Plant", function(State) kometa.planterssettings[3].enabled = State end)
 
 local mobkill = combtab:Sector("Combat")
-mobkill:Cheat("Checkbox", "Train Crab", function(State) if State then api.humanoidrootpart().CFrame = CFrame.new(-307.52117919922, 107.91863250732, 467.86791992188) end end)
+mobkill:Cheat("Checkbox", "Train Crab", function(State) if State then api.teleport(CFrame.new(-375, 110, 535)) task.wait(5) api.humanoidrootpart().CFrame = CFrame.new(-256, 110, 475) end cocopad.CanCollide = State kometa.toggles.traincrab = State end)
 mobkill:Cheat("Checkbox", "Train Snail", function(State) fd = game.Workspace.FlowerZones['Stump Field'] if State then api.humanoidrootpart().CFrame = CFrame.new(fd.Position.X, fd.Position.Y-6, fd.Position.Z) else api.humanoidrootpart().CFrame = CFrame.new(fd.Position.X, fd.Position.Y+2, fd.Position.Z) end end)
 mobkill:Cheat("Checkbox", "Kill Mondo", function(State) kometa.toggles.killmondo = State end)
 mobkill:Cheat("Checkbox", "Kill Vicious", function(State) kometa.toggles.killvicious = State end)
@@ -1467,6 +1503,7 @@ task.spawn(function() while task.wait() do
         --if kometa.toggles.farmcoco then getcoco() end
         --if kometa.toggles.collectcrosshairs then getcrosshairs() end
         if kometa.toggles.farmflame then getflame() end
+        if kometa.toggles.farmglitchedtokens then getglitchtoken() end
         -- if kometa.toggles.farmfuzzy then getfuzzy() end
     end
 end end)
@@ -1711,7 +1748,7 @@ task.spawn(function() while task.wait() do
 end end)
 
 task.spawn(function() while task.wait(0.001) do
-    if kometa.toggles.traincrab then game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-259, 111.8, 496.4) * CFrame.fromEulerAnglesXYZ(0, 110, 90) temptable.float = true temptable.float = false end
+    -- if kometa.toggles.traincrab then game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-259, 111.8, 496.4) * CFrame.fromEulerAnglesXYZ(0, 110, 90) temptable.float = true temptable.float = false end
     if kometa.toggles.autodig then if game.Players.LocalPlayer then if game.Players.LocalPlayer.Character then if game.Players.LocalPlayer.Character:FindFirstChildOfClass("Tool") then if game.Players.LocalPlayer.Character:FindFirstChildOfClass("Tool"):FindFirstChild("ClickEvent", true) then clickevent = game.Players.LocalPlayer.Character:FindFirstChildOfClass("Tool"):FindFirstChild("ClickEvent", true) or nil end end end if clickevent then clickevent:FireServer() end end end
 end end)
 
@@ -1834,6 +1871,7 @@ task.spawn(function() while task.wait(1) do
     end
     if kometa.toggles.clock then game:GetService("ReplicatedStorage").Events.ToyEvent:FireServer("Wealth Clock") end
     if kometa.toggles.freeantpass then game:GetService("ReplicatedStorage").Events.ToyEvent:FireServer("Free Ant Pass Dispenser") end
+    if kometa.toggles.freerobopass then game:GetService("ReplicatedStorage").Events.ToyEvent:FireServer("Free Robo Pass Dispenser") end
     game.CoreGui.kometaUI.Container.Categories.Statistics.L["Statistics"].Container["Gained Honey"].Title.Text = "Gained Honey: "..api.suffixstring(temptable.honeycurrent - temptable.honeystart)
     game.CoreGui.kometaUI.Container.Categories.Statistics.L["Statistics"].Container["Elapsed Time"].Title.Text = "Elapsed Time: "..api.toHMS(temptable.stats.runningfor)
     game.CoreGui.kometaUI.Container.Categories.Statistics.L["Statistics"].Container["Farmed Sprouts"].Title.Text = "Farmed Sprouts: "..temptable.stats.farmedsprouts
@@ -1882,6 +1920,7 @@ end)
 game.Workspace.Collectibles.ChildAdded:Connect(function(token)
     if kometa.toggles.farmtickets and temptable.collecting.tickets == false then farmtickets(token) end
     if kometa.toggles.farmrares and temptable.collecting.rares == false then farmrares(token) end
+    if kometa.toggles.traincrab then farmcococrab(token) end
     if kometa.toggles.farmsnowflakes and temptable.collecting.snowflake == false then farmsnowflakes(token) end
 end)
 
