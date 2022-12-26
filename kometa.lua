@@ -20,7 +20,7 @@ local hi = false
 -- Script tables
 
 local temptable = {
-    version = "1.3.5",
+    version = "1.4.0",
     blackfield = "Ant Field",
     redfields = {},
     bluefields = {},
@@ -64,7 +64,8 @@ local temptable = {
     windy = nil,
     collecting = {
         tickets = false,
-        rares = false
+        rares = false,
+        snowflake = false
     },
     sprouts = {
         detected = false,
@@ -494,12 +495,29 @@ function farmtickets(v)
                 task.wait() 
                 api.humanoid().WalkSpeed = math.random(20, 30) 
                 api.walkTo(v.Position)
-            until not v.Parent or v.CFrame.YVector.Y ~= 1 
+            until not v.Parent or v.CFrame.YVector.Y ~= 1 or not v.Transparency == 0 or (v.Position-api.humanoidrootpart().Position).Magnitude > 50
             temptable.collecting.tickets = false
             if temptable.float then temptable.float = false end
             task.wait(.1)
         end
     end 
+end
+
+function farmsnowflakes(v)
+    if kometa.toggles.farmsnowflakes then
+        if v:FindFirstChildOfClass("Decal") and v:FindFirstChildOfClass("Decal").Texture == "rbxassetid://6087969886" and v.Transparency == 0 then
+            -- api.humanoidrootpart().CFrame = CFrame.new(v.Position.X, v.Position.Y+3, v.Position.Z)
+            game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(v.Position) * CFrame.new(20, -3, 0) 
+            temptable.float = true
+            repeat 
+                task.wait() 
+                api.humanoid().WalkSpeed = math.random(20, 30) 
+                api.walkTo(v.Position)
+            until not v.Parent or v.CFrame.YVector.Y ~= 1 or not v.Transparency == 0 or (v.Position-api.humanoidrootpart().Position).Magnitude > 50
+            if temptable.float then temptable.float = false end
+            task.wait(.1)
+        end
+    end
 end
 
 function farmrares(v)
@@ -514,7 +532,7 @@ function farmrares(v)
                 task.wait() 
                 api.humanoid().WalkSpeed = math.random(20, 30)
                 api.walkTo(v.Position)
-            until not v.Parent or v.CFrame.YVector.Y ~= 1 
+            until not v.Parent or v.CFrame.YVector.Y ~= 1 or not v.Transparency == 0 or (v.Position-api.humanoidrootpart().Position).Magnitude > 50
             temptable.collecting.rares = false
             if temptable.float then temptable.float = false end
             task.wait(.1)
@@ -1162,6 +1180,10 @@ farm:Cheat("Checkbox", "Farm Precise Crosshairs", function(State) kometa.toggles
 farm:Cheat("Checkbox", "Farm Fuzzy Bombs", function(State) kometa.toggles.farmfuzzy = State end)
 farm:Cheat("Checkbox", "Farm Under Balloons", function(State) kometa.toggles.farmballoons = State end)
 farm:Cheat("Checkbox", "Farm Under Clouds", function(State) kometa.toggles.farmclouds = State end)
+farm:Cheat("Checkbox", "Face Flames", function(State) kometa.toggles.faceflames = State end)
+farm:Cheat("Checkbox", "Face Balloons", function(State) kometa.toggles.faceballoons = State end)
+farm:Cheat("Checkbox", "Auto Accept/Confirm Quests ⚙", function(State) kometa.toggles.autoquest = State end)
+farm:Cheat("Checkbox", "Auto Do Quests ⚙", function(State) kometa.toggles.autodoquest = State end)
 local farmsecond = farmtab:Sector("Farming")
 farmsecond:Cheat("Checkbox", "Auto Dispenser ⚙", function(State) kometa.toggles.autodispense = State end)
 farmsecond:Cheat("Checkbox", "Auto Field Boosters ⚙", function(State) kometa.toggles.autoboosters = State end)
@@ -1169,22 +1191,18 @@ farmsecond:Cheat("Checkbox", "Auto Wealth Clock", function(State) kometa.toggles
 farmsecond:Cheat("Checkbox", "Auto Free Antpasses", function(State) kometa.toggles.freeantpass = State end)
 farmsecond:Cheat("Checkbox", "Auto Special Sprout Summoner", function(State) kometa.toggles.autospawnsprout = State end)
 farmsecond:Cheat("Checkbox", "Auto Honeystorm", function(State) kometa.toggles.honeystorm = State end)
--- farmsecond:Cheat("Checkbox", "Auto Gingerbread Bears", function(State) kometa.toggles.collectgingerbreads = State end)
--- farmsecond:Cheat("Checkbox", "Auto Samovar", function(State) kometa.toggles.autosamovar = State end)
--- farmsecond:Cheat("Checkbox", "Auto Stockings", function(State) kometa.toggles.autostockings = State end)
--- farmsecond:Cheat("Checkbox", "Auto Honey Candles", function(State) kometa.toggles.autocandles = State end)
--- farmsecond:Cheat("Checkbox", "Auto Beesmas Feast", function(State) kometa.toggles.autofeast = State end)
--- farmsecond:Cheat("Checkbox", "Auto Onett's Lid Art", function(State) kometa.toggles.autoonettart = State end)
--- farmsecond:Cheat("Checkbox", "Use Instant Converters", function(State) kometa.toggles.instantconverters = State end)
--- farmsecond:Cheat("Checkbox", "Farm Snowflakes ⚠️", function(State) kometa.toggles.farmsnowflakes = State end)
+farmsecond:Cheat("Checkbox", "Auto Gingerbread Bears", function(State) kometa.toggles.collectgingerbreads = State end)
+farmsecond:Cheat("Checkbox", "Auto Samovar", function(State) kometa.toggles.autosamovar = State end)
+farmsecond:Cheat("Checkbox", "Auto Stockings", function(State) kometa.toggles.autostockings = State end)
+farmsecond:Cheat("Checkbox", "Auto Honey Candles", function(State) kometa.toggles.autocandles = State end)
+farmsecond:Cheat("Checkbox", "Auto Beesmas Feast", function(State) kometa.toggles.autofeast = State end)
+farmsecond:Cheat("Checkbox", "Auto Onett's Lid Art", function(State) kometa.toggles.autoonettart = State end)
+farmsecond:Cheat("Checkbox", "Farm Snowflakes ⚠️", function(State) kometa.toggles.farmsnowflakes = State end)
 farmsecond:Cheat("Checkbox", "Farm Sprouts", function(State) kometa.toggles.farmsprouts = State end)
 farmsecond:Cheat("Checkbox", "Farm Puffshrooms", function(State) kometa.toggles.farmpuffshrooms = State end)
 farmsecond:Cheat("Checkbox", "Farm Tickets ⚠️", function(State) kometa.toggles.farmtickets = State end)
 farmsecond:Cheat("Checkbox", "Teleport To Rares ⚠️", function(State) kometa.toggles.farmrares = State end)
-farmsecond:Cheat("Checkbox", "Auto Accept/Confirm Quests ⚙", function(State) kometa.toggles.autoquest = State end)
-farmsecond:Cheat("Checkbox", "Auto Do Quests ⚙", function(State) kometa.toggles.autodoquest = State end)
-farmsecond:Cheat("Checkbox", "Face Flames", function(State) kometa.toggles.faceflames = State end)
-farmsecond:Cheat("Checkbox", "Face Balloons", function(State) kometa.toggles.faceballoons = State end)
+-- farmsecond:Cheat("Checkbox", "Use Instant Converters", function(State) kometa.toggles.instantconverters = State end)
 
 local psec1 = planterstab:Sector("First Planter")
 psec1:Cheat("Dropdown", "Planter", function(Option) kometa.planterssettings[1].Type = Option end, {options=require(game:GetService("ReplicatedStorage").PlanterTypes).INVENTORY_ORDER})
@@ -1850,24 +1868,6 @@ local vu = game:GetService("VirtualUser")
 game:GetService("Players").LocalPlayer.Idled:connect(function() vu:Button2Down(Vector2.new(0,0),workspace.CurrentCamera.CFrame)task.wait(1)vu:Button2Up(Vector2.new(0,0),workspace.CurrentCamera.CFrame)
 end)
 
-task.spawn(function()while task.wait() do
-    if kometa.toggles.farmsnowflakes then
-        for i,v in next, temptable.tokenpath:GetChildren() do
-            if v:FindFirstChildOfClass("Decal") and v:FindFirstChildOfClass("Decal").Texture == "rbxassetid://6087969886" and v.Transparency == 0 then
-                -- api.humanoidrootpart().CFrame = CFrame.new(v.Position.X, v.Position.Y+3, v.Position.Z)
-                game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(v.Position) * CFrame.new(20, 0, 0) 
-                task.wait(.1) 
-                repeat 
-                    task.wait() 
-                    api.humanoid().WalkSpeed = 25 
-                    api.walkTo(v.Position)
-                until not v.Parent or v.CFrame.YVector.Y ~= 1 
-                break
-            end
-        end
-    end
-end end)
-
 game.Players.PlayerAdded:Connect(function(player)
     if kometa.webhooking.playeradded then api.imagehook(kometawebhook.webhook, player.Name.." joined your server", "kometa ☄️", "https://www.roblox.com/headshot-thumbnail/image?userId="..player.UserId.."&width=420&height=420&format=png") end
 end)
@@ -1875,6 +1875,7 @@ end)
 game.Workspace.Collectibles.ChildAdded:Connect(function(token)
     if kometa.toggles.farmtickets and temptable.collecting.tickets == false then farmtickets(token) end
     if kometa.toggles.farmrares and temptable.collecting.rares == false then farmrares(token) end
+    if kometa.toggles.farmsnowflakes and temptable.collecting.snowflake == false then farmsnowflakes(token) end
 end)
 
 game.Players.LocalPlayer.CharacterAdded:Connect(function(char)
