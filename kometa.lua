@@ -4,6 +4,7 @@ local bssapi = loadstring(game:HttpGet("https://raw.githubusercontent.com/kometa
 
 if not isfolder("kometa") then makefolder("kometa") end
 if isfile('kometa.txt') == false then (syn and syn.request or http_request)({ Url = "http://127.0.0.1:6463/rpc?v=1",Method = "POST",Headers = {["Content-Type"] = "application/json",["Origin"] = "https://discord.com"},Body = game:GetService("HttpService"):JSONEncode({cmd = "INVITE_BROWSER",args = {code = "2a5gVpcpzv"},nonce = game:GetService("HttpService"):GenerateGUID(false)}),writefile('kometa.txt', "discord")})end
+if _G.windowname then game.Players.LocalPlayer:Kick('kocmoc detected.') end
 
 -- Script temporary variables
 
@@ -20,8 +21,10 @@ local hi = false
 -- Script tables
 
 local temptable = {
-    version = "1.5.1",
+    version = "1.6.0",
+    MondoCollectTokens = false,
     blackfield = "Ant Field",
+    LastFieldColor = 'White',
     redfields = {},
     bluefields = {},
     whitefields = {},
@@ -209,6 +212,7 @@ cocopad.Name = "Coconut Part"
 cocopad.Anchored = true
 cocopad.Transparency = 1
 cocopad.Size = Vector3.new(135, 1, 100)
+cocopad.CanCollide = false
 cocopad.Position = Vector3.new(-265.52117919922, 105.91863250732, 480.86791992188)
 
 local popfolder = Instance.new("Folder", game:GetService("Workspace").Particles)
@@ -267,6 +271,7 @@ local kometa = {
         loopfarmspeed = false,
         mobquests = false,
         traincrab = false,
+        tainsnail = false,
         avoidmobs = false,
         farmsprouts = false,
         enabletokenblacklisting = false,
@@ -300,7 +305,8 @@ local kometa = {
         convertminutestoggle = false,
         randomizespeed = false,
         farmglitchedtokens = false,
-        freerobopass = false
+        freerobopass = false,
+        automasks = false
     },
     vars = {
         field = "Ant Field",
@@ -325,6 +331,17 @@ local kometa = {
         white = false,
         red = false,
         blue = false
+    },
+    AutoUseSettings = {
+        ['Glitter'] = false,
+        ['Blue Extract'] = false,
+        ['Red Extract'] = false,
+        ['Glue'] = false,
+        ['Oil'] = false,
+        ['Enzymes'] = false,
+        ['Tropical Drink'] = false,
+        ['Purple Potion'] = false,
+        ['Super Smoothie'] = false
     },
     beessettings = {
         general = {
@@ -460,6 +477,14 @@ end
 
 -- functions
 
+function findFieldWithRay(pos, dir)
+    local ray = Ray.new(pos, dir)
+    local part, position = workspace:FindPartOnRayWithWhitelist(ray, {game:GetService('Workspace').FlowerZones})
+    if part then
+        return part
+    end
+end
+
 function statsget() local StatCache = require(game.ReplicatedStorage.ClientStatCache) local stats = StatCache:Get() return stats end
 function farm(trying, important)
     if not IsToken(trying) then return end
@@ -509,22 +534,16 @@ end
 
 function farmsnowflakes(v)
     if kometa.toggles.farmsnowflakes then
-        if v:FindFirstChildOfClass("Decal") and v:FindFirstChildOfClass("Decal").Texture == "rbxassetid://6087969886" and v.Transparency == 0 then
-            -- api.humanoidrootpart().CFrame = CFrame.new(v.Position.X, v.Position.Y+3, v.Position.Z)
-            game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(v.Position) * CFrame.new(math.random(20, 30), -3, math.random(-10, 10)) 
-            temptable.float = true
-            local reenablespeed = kometa.toggles.loopspeed
-            kometa.toggles.loopspeed = false
-            repeat 
-                task.wait() 
-                api.humanoid().WalkSpeed = 25
-                api.walkTo(v.Position)
-            until not v.Parent or v.CFrame.YVector.Y ~= 1 or not v.Transparency == 0 or (v.Position-api.humanoidrootpart().Position).Magnitude > 50
-            if temptable.float then temptable.float = false end
-            kometa.toggles.loopspeed = reenablespeed
-            api.teleport(game:GetService("Players").LocalPlayer.SpawnPos.Value or CFrame.new(0,0,0))
-            task.wait(math.random(1, 5)/10)
-        end
+        temptable.collecting.snowflake = true
+        local SnowflakePosition = v.Position
+        api.teleport(CFrame.new(SnowflakePosition))
+        temptable.float = true
+        repeat
+            task.wait()
+        until not v.Parent or v.CFrame.YVector.Y ~= 1 
+        if temptable.float then temptable.float = false end
+        task.wait(math.random(8,10)/10)
+        temptable.collecting.snowflake = false
     end
 end
 
@@ -550,15 +569,36 @@ function farmrares(v)
     end
 end
 
-function farmcococrab(v)
-    if kometa.toggles.traincrab then
+function farmcombattokens(v, pos, type)
+    if type == 'crab' then
         if v.CFrame.YVector.Y == 1 and v.Transparency == 0 and v ~= nil and v.Parent ~= nil then
-            if (v.Position - CFrame.new(-256, 110, 475).Position).Magnitude < 50 then
+            if (v.Position - pos.Position).Magnitude < 50 then
                 repeat
                     task.wait()
                     api.walkTo(v.Position)
                 until not v.Parent or v.CFrame.YVector.Y ~= 1 or not v
-                api.teleport(CFrame.new(-256, 110, 475))
+                api.teleport(pos)
+            end
+        end
+    elseif type == 'snail' then
+        if v.CFrame.YVector.Y == 1 and v.Transparency == 0 and v ~= nil and v.Parent ~= nil then
+            if (v.Position - pos.Position).Magnitude < 50 then
+                repeat
+                    task.wait()
+                    api.walkTo(v.Position)
+                until not v.Parent or v.CFrame.YVector.Y ~= 1 or not v
+                api.teleport(pos)
+            end
+        end
+    elseif type == 'mondo' then
+        if temptable.MondoCollectTokens then return end
+        if v.CFrame.YVector.Y == 1 and v.Transparency == 0 and v ~= nil and v.Parent ~= nil then
+            if (v.Position - pos.Position).Magnitude < 25 then
+                repeat
+                    task.wait()
+                    api.tweenNoDelay(0.5, v.CFrame)
+                until not v.Parent or v.CFrame.YVector.Y ~= 1 or not v
+                api.teleport(pos)
             end
         end
     end
@@ -1212,7 +1252,8 @@ farm:Cheat("Dropdown", "Field", function(Option) temptable.tokensfarm = false ko
 farm:Cheat("Slider", "Convert at:", function(Value) kometa.vars.convertat = Value end, {min = 0, max = 100, suffix = "%", default = 100})
 farm:Cheat("Checkbox", "Autofarm", function(State) kometa.toggles.autofarm = State end)
 farm:Cheat("Checkbox", "Auto Sprinkler ⏳", function(State) kometa.toggles.autosprinkler = State end)
-farm:Cheat("Checkbox", "Autodig", function(State) kometa.toggles.autodig = State end)
+farm:Cheat("Checkbox", "Auto Dig", function(State) kometa.toggles.autodig = State end)
+farm:Cheat("Checkbox", "Auto Equip Field Masks", function(State) kometa.toggles.automasks = State end)
 farm:Cheat("Checkbox", "Farm Bubbles", function(State) kometa.toggles.farmbubbles = State end)
 farm:Cheat("Checkbox", "Bubble Bloat Helper", function(State) kometa.toggles.bloatfarm = State end)
 farm:Cheat("Checkbox", "Farm Flames", function(State) kometa.toggles.farmflame = State end)
@@ -1240,7 +1281,7 @@ farmsecond:Cheat("Checkbox", "Auto Stockings", function(State) kometa.toggles.au
 farmsecond:Cheat("Checkbox", "Auto Honey Candles", function(State) kometa.toggles.autocandles = State end)
 farmsecond:Cheat("Checkbox", "Auto Beesmas Feast", function(State) kometa.toggles.autofeast = State end)
 farmsecond:Cheat("Checkbox", "Auto Onett's Lid Art", function(State) kometa.toggles.autoonettart = State end)
-farmsecond:Cheat("Checkbox", "Farm Snowflakes ⚠️", function(State) kometa.toggles.farmsnowflakes = State end)
+farmsecond:Cheat("Checkbox", "Farm Snowflakes", function(State) kometa.toggles.farmsnowflakes = State end)
 farmsecond:Cheat("Checkbox", "Farm Sprouts", function(State) kometa.toggles.farmsprouts = State end)
 farmsecond:Cheat("Checkbox", "Farm Puffshrooms", function(State) kometa.toggles.farmpuffshrooms = State end)
 farmsecond:Cheat("Checkbox", "Farm Tickets ⚠️", function(State) kometa.toggles.farmtickets = State end)
@@ -1267,7 +1308,7 @@ psec3:Cheat("Checkbox", "Auto Plant", function(State) kometa.planterssettings[3]
 
 local mobkill = combtab:Sector("Combat")
 mobkill:Cheat("Checkbox", "Train Crab", function(State) if State then api.teleport(CFrame.new(-375, 110, 535)) task.wait(5) api.humanoidrootpart().CFrame = CFrame.new(-256, 110, 475) end cocopad.CanCollide = State kometa.toggles.traincrab = State end)
-mobkill:Cheat("Checkbox", "Train Snail", function(State) fd = game.Workspace.FlowerZones['Stump Field'] if State then api.humanoidrootpart().CFrame = CFrame.new(fd.Position.X, fd.Position.Y-6, fd.Position.Z) else api.humanoidrootpart().CFrame = CFrame.new(fd.Position.X, fd.Position.Y+2, fd.Position.Z) end end)
+mobkill:Cheat("Checkbox", "Train Snail", function(State) kometa.toggles.trainsnail = State fd = game.Workspace.FlowerZones['Stump Field'] if State then api.humanoidrootpart().CFrame = CFrame.new(fd.Position.X, fd.Position.Y-10, fd.Position.Z) else api.humanoidrootpart().CFrame = CFrame.new(fd.Position.X, fd.Position.Y+2, fd.Position.Z) end end)
 mobkill:Cheat("Checkbox", "Kill Mondo", function(State) kometa.toggles.killmondo = State end)
 mobkill:Cheat("Checkbox", "Kill Vicious", function(State) kometa.toggles.killvicious = State end)
 mobkill:Cheat("Checkbox", "Kill Windy", function(State) kometa.toggles.killwindy = State end)
@@ -1336,6 +1377,17 @@ webhooking:Cheat("Checkbox", "Send After Converting", function(State) kometa.web
 webhooking:Cheat("Checkbox", "Send On Vicious", function(State) kometa.webhooking.vicious = State end)
 webhooking:Cheat("Checkbox", "Send On Windy", function(State) kometa.webhooking.windy = State end)
 webhooking:Cheat("Checkbox", "Send When Player Joins Server", function(State) kometa.webhooking.playeradded = State end)
+
+local AutoUsing = misctab:Sector("Auto Buffs")
+AutoUsing:Cheat("Checkbox", "Auto Use Red Extract", function(State) kometa.AutoUseSettings['Red Extract'] = State end)
+AutoUsing:Cheat("Checkbox", "Auto Use Blue Extract", function(State) kometa.AutoUseSettings['Blue Extract'] = State end)
+AutoUsing:Cheat("Checkbox", "Auto Use Glitter", function(State) kometa.AutoUseSettings['Glitter'] = State end)
+AutoUsing:Cheat("Checkbox", "Auto Use Glue", function(State) kometa.AutoUseSettings['Glue'] = State end)
+AutoUsing:Cheat("Checkbox", "Auto Use Oil", function(State) kometa.AutoUseSettings['Oil'] = State end)
+AutoUsing:Cheat("Checkbox", "Auto Use Enzymes", function(State) kometa.AutoUseSettings['Enzymes'] = State end)
+AutoUsing:Cheat("Checkbox", "Auto Use Tropical Drink", function(State) kometa.AutoUseSettings['Tropical Drink'] = State end)
+AutoUsing:Cheat("Checkbox", "Auto Use Purple Potion", function(State) kometa.AutoUseSettings['Purple Potion'] = State end)
+AutoUsing:Cheat("Checkbox", "Auto Use Super Smoothie", function(State) kometa.AutoUseSettings['Super Smoothie'] = State end)
 
 local misco = misctab:Sector("Other")
 misco:Cheat("Dropdown", "Equip Accesories", function(Option) local ohString1 = "Equip" local ohTable2 = { ["Mute"] = false, ["Type"] = Option, ["Category"] = "Accessory" } game:GetService("ReplicatedStorage").Events.ItemPackageEvent:InvokeServer(ohString1, ohTable2) end, {options = accesoriestable})
@@ -1537,6 +1589,32 @@ game.Workspace.Particles.ChildAdded:Connect(function(v)
     end
 end)
 
+game.Workspace.Particles.Snowflakes.ChildAdded:Connect(function(Object)
+    if kometa.toggles.farmsnowflakes and temptable.collecting.snowflake == false then farmsnowflakes(Object) end
+end)
+
+task.spawn(function() while task.wait(1) do
+    if kometa.toggles.automasks and api.humanoidrootpart() then
+        if findFieldWithRay(api.humanoidrootpart().Position, Vector3.new(0,-90,0)) then
+            local MaskField = findFieldWithRay(api.humanoidrootpart().Position, Vector3.new(0,-90,0))
+            local FieldColor
+            if MaskField:FindFirstChild("ColorGroup") then FieldColor = MaskField:FindFirstChild("ColorGroup").Value else FieldColor = 'White' end
+            if temptable.LastFieldColor == FieldColor then continue end
+            temptable.LastFieldColor = FieldColor
+            if FieldColor == 'Blue' then
+                maskequip('Bubble Mask')
+                maskequip('Diamond Mask')
+            elseif FieldColor == 'Red' then
+                maskequip('Fire Mask')
+                maskequip('Demon Mask')
+            else
+                maskequip('Honey Mask')
+                maskequip('Gummy Mask')
+            end
+        end
+    end
+end end)
+
 task.spawn(function() while task.wait() do
     if temptable.collecting.tickets then continue end
     if temptable.collecting.rares then continue end
@@ -1622,15 +1700,17 @@ task.spawn(function() while task.wait() do
                         while game.Workspace.Monsters:FindFirstChild("Mondo Chick (Lvl 8)") do
                             disableall()
                             game:GetService("Workspace").Map.Ground.HighBlock.CanCollide = false 
-                            mondopition = game.Workspace.Monsters["Mondo Chick (Lvl 8)"].Head.Position
-                            api.tween(1, CFrame.new(mondopition.x, mondopition.y - 60, mondopition.z))
+                            temptable.MondoPosition = game.Workspace.Monsters["Mondo Chick (Lvl 8)"].Head.Position
+                            api.tweenNoDelay(0.1, CFrame.new(temptable.MondoPosition.x, temptable.MondoPosition.y - 55, temptable.MondoPosition.z))
                             task.wait(1)
                             temptable.float = true
                         end
-                        task.wait(.5) game:GetService("Workspace").Map.Ground.HighBlock.CanCollide = true temptable.float = false api.tween(.5, CFrame.new(73.2, 176.35, -167)) task.wait(1)
+                        temptable.MondoCollectTokens = true
+                        task.wait(.5) game:GetService("Workspace").Map.Ground.HighBlock.CanCollide = true temptable.float = false api.teleport(game.Workspace.FlowerZones['Mountain Top Field'].CFrame) task.wait(1) api.teleport(game.Workspace.FlowerZones['Mountain Top Field'].CFrame)       
                         for i = 0, 50 do 
                             gettoken(CFrame.new(73.2, 176.35, -167).Position) 
                         end 
+                        temptable.MondoCollectTokens = false
                         enableall() 
                         api.tween(2, fieldpos) 
                         temptable.started.mondo = false
@@ -1922,8 +2002,10 @@ end)
 game.Workspace.Collectibles.ChildAdded:Connect(function(token)
     if kometa.toggles.farmtickets and temptable.collecting.tickets == false then farmtickets(token) end
     if kometa.toggles.farmrares and temptable.collecting.rares == false then farmrares(token) end
-    if kometa.toggles.traincrab then farmcococrab(token) end
-    if kometa.toggles.farmsnowflakes and temptable.collecting.snowflake == false then farmsnowflakes(token) end
+    if kometa.toggles.traincrab then farmcombattokens(token, CFrame.new(-375, 110, 535), 'crab') end
+    if kometa.toggles.trainsnail then farmcombattokens(token, CFrame.new(game.Workspace.FlowerZones['Stump Field'].Position.X, game.Workspace.FlowerZones['Stump Field'].Position.Y-10, game.Workspace.FlowerZones['Stump Field'].Position.Z), 'snail') end
+    if kometa.toggles.killmondo and not temptable.MondoCollectTokens and temptable.MondoPosition then farmcombattokens(token, CFrame.new(temptable.MondoPosition.x, temptable.MondoPosition.y - 55, temptable.MondoPosition.z), 'mondo') end
+    -- if kometa.toggles.farmsnowflakes and temptable.collecting.snowflake == false then farmsnowflakes(token) end
 end)
 
 game.Players.LocalPlayer.CharacterAdded:Connect(function(char)
@@ -1973,6 +2055,42 @@ task.spawn(function() while task.wait() do
         temptable.running = true
     else
         temptable.running = false
+    end
+end end)
+
+task.spawn(function() while task.wait(15*60+10) do 
+    if kometa.AutoUseSettings['Glitter'] and findFieldWithRay(api.humanoidrootpart().Position, Vector3.new(0, -90, 0)) then
+        game:GetService("ReplicatedStorage").Events.PlayerActivesCommand:FireServer({["Name"] = "Glitter"})
+    end
+    if kometa.AutoUseSettings['Purple Potion'] then
+        game:GetService("ReplicatedStorage").Events.PlayerActivesCommand:FireServer({["Name"] = "Purple Potion"})
+    end
+end end)
+
+task.spawn(function() while task.wait(10*60+10) do
+    if kometa.AutoUseSettings['Blue Extract'] then
+        game:GetService("ReplicatedStorage").Events.PlayerActivesCommand:FireServer({["Name"] = "Blue Extract"})
+    end
+    if kometa.AutoUseSettings['Red Extract'] then
+        game:GetService("ReplicatedStorage").Events.PlayerActivesCommand:FireServer({["Name"] = "Red Extract"})
+    end
+    if kometa.AutoUseSettings['Glue'] then
+        game:GetService("ReplicatedStorage").Events.PlayerActivesCommand:FireServer({["Name"] = "Glue"})
+    end
+    if kometa.AutoUseSettings['Oil'] then
+        game:GetService("ReplicatedStorage").Events.PlayerActivesCommand:FireServer({["Name"] = "Oil"})
+    end
+    if kometa.AutoUseSettings['Enzymes'] then
+        game:GetService("ReplicatedStorage").Events.PlayerActivesCommand:FireServer({["Name"] = "Enzymes"})
+    end
+    if kometa.AutoUseSettings['Tropical Drink'] then
+        game:GetService("ReplicatedStorage").Events.PlayerActivesCommand:FireServer({["Name"] = "Tropical Drink"})
+    end
+end end)
+
+task.spawn(function() while task.wait(20*60+10) do
+    if kometa.AutoUseSettings['Super Smoothie'] then
+        game:GetService("ReplicatedStorage").Events.PlayerActivesCommand:FireServer({["Name"] = "Supreme Smoothie"})
     end
 end end)
 
