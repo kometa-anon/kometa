@@ -542,7 +542,7 @@ function farmsnowflakes(v)
             task.wait()
         until not v.Parent or v.CFrame.YVector.Y ~= 1 
         if temptable.float then temptable.float = false end
-        task.wait(math.random(8,10)/10)
+        task.wait(1)
         temptable.collecting.snowflake = false
     end
 end
