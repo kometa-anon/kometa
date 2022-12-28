@@ -82,7 +82,7 @@ kometa.dark_theme = { -- dark
 	textbox_text_hover = Color3.fromRGB(232, 232, 232),
 	textbox_placeholder = Color3.fromRGB(135, 135, 138),
 
-	dropdown_background = Color3.fromRGB(94, 54, 139),
+	dropdown_background = Color3.fromRGB(164, 84, 255),
 	dropdown_text = Color3.fromRGB(195, 195, 195),
 	dropdown_text_hover = Color3.fromRGB(255,255,255),
 	dropdown_scrollbar_color = Color3.fromRGB(255,255,255),
@@ -829,7 +829,7 @@ function kometa.new(isdark, gprojectName, thinProject)
 
 						cheat.list = kometa:Create("ScrollingFrame", {
 							Name = "List",
-							BackgroundColor3 = theme.dropdown_background,
+							BackgroundColor3 = Color3.fromRGB(94, 54, 139),
 							BackgroundTransparency = 0,
 							BorderSizePixel = 0,
 							Position = UDim2.new(0, 0, 1, 0),
@@ -921,7 +921,7 @@ function kometa.new(isdark, gprojectName, thinProject)
 									end
 								end
 
-								kometa.gs["TweenService"]:Create(cheat.list, TweenInfo.new(0.2), {Size = UDim2.new(1, 0, 0, math.clamp(cheat.list["UIListLayout"].AbsoluteContentSize.Y, 0, 150)), Position = UDim2.new(0, 0, 1, 0), ScrollBarImageTransparency = 0, BackgroundTransparency = 0.5}):Play()
+								kometa.gs["TweenService"]:Create(cheat.list, TweenInfo.new(0.2), {Size = UDim2.new(1, 0, 0, math.clamp(cheat.list["UIListLayout"].AbsoluteContentSize.Y, 0, 150)), Position = UDim2.new(0, 0, 1, 0), ScrollBarImageTransparency = 0, BackgroundTransparency = 0}):Play()
 							else
 								for _, button in next, cheat.list:GetChildren() do
 									if button:IsA("TextButton") then
