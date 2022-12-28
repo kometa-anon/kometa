@@ -829,8 +829,8 @@ function kometa.new(isdark, gprojectName, thinProject)
 
 						cheat.list = kometa:Create("ScrollingFrame", {
 							Name = "List",
-							BackgroundColor3 = theme.dropdown_background,
-							BackgroundTransparency = 0.5,
+							BackgroundColor3 = Color3.new(94, 54, 139),
+							BackgroundTransparency = 0,
 							BorderSizePixel = 0,
 							Position = UDim2.new(0, 0, 1, 0),
 							Size = UDim2.new(1, 0, 0, 100),
@@ -921,7 +921,7 @@ function kometa.new(isdark, gprojectName, thinProject)
 									end
 								end
 
-								kometa.gs["TweenService"]:Create(cheat.list, TweenInfo.new(0.2), {Size = UDim2.new(1, 0, 0, math.clamp(cheat.list["UIListLayout"].AbsoluteContentSize.Y, 0, 150)), Position = UDim2.new(0, 0, 1, 0), ScrollBarImageTransparency = 0, BackgroundTransparency = 0.5}):Play()
+								kometa.gs["TweenService"]:Create(cheat.list, TweenInfo.new(0.2), {Size = UDim2.new(1, 0, 0, math.clamp(cheat.list["UIListLayout"].AbsoluteContentSize.Y, 0, 150)), Position = UDim2.new(0, 0, 1, 0), ScrollBarImageTransparency = 0, BackgroundTransparency = 0}):Play()
 							else
 								for _, button in next, cheat.list:GetChildren() do
 									if button:IsA("TextButton") then
