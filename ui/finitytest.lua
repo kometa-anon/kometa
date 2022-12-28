@@ -67,16 +67,16 @@ kometa.dark_theme = { -- dark
 	category_button_background = Color3.fromRGB(63, 62, 65),
 	category_button_border = Color3.fromRGB(72, 71, 74),
 
-	checkbox_checked = Color3.fromRGB(164, 84, 255),
+	checkbox_checked = Color3.fromRGB(65, 80, 177),
 	checkbox_outer = Color3.fromRGB(37, 34, 41),
 	checkbox_inner = Color3.fromRGB(37, 34, 41),
 
-	slider_color = Color3.fromRGB(164, 84, 255),
+	slider_color = Color3.fromRGB(65, 80, 177),
 	slider_color_sliding = Color3.fromRGB(255, 255, 255),
 	slider_background = Color3.fromRGB(37, 34, 41),
 	slider_text = Color3.fromRGB(177, 177, 177),
 
-	textbox_background = Color3.fromRGB(164, 84, 255),
+	textbox_background = Color3.fromRGB(65, 80, 177),
 	textbox_background_hover = Color3.fromRGB(76, 61, 100),
 	textbox_text = Color3.fromRGB(195, 195, 195),
 	textbox_text_hover = Color3.fromRGB(232, 232, 232),
@@ -87,7 +87,7 @@ kometa.dark_theme = { -- dark
 	dropdown_text_hover = Color3.fromRGB(255,255,255),
 	dropdown_scrollbar_color = Color3.fromRGB(255,255,255),
 
-	button_background = Color3.fromRGB(164, 84, 255),
+	button_background = Color3.fromRGB(65, 80, 177),
 	button_background_hover = Color3.fromRGB(76, 61, 100),
 	button_background_down = Color3.fromRGB(194, 141, 255),
 
