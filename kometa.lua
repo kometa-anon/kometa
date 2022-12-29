@@ -22,7 +22,7 @@ local hi = false
 -- Script tables
 
 local temptable = {
-    version = "1.6.1",
+    version = "1.6.2",
     MondoCollectTokens = false,
     blackfield = "Ant Field",
     LastFieldColor = 'White',
@@ -69,11 +69,12 @@ local temptable = {
     collecting = {
         tickets = false,
         rares = false,
-        snowflake = false
+        snowflake = false,
+        dispensers = false
     },
     sprouts = {
         detected = false,
-        coords
+        coords 
     },
     cache = {
         autofarm = false,
@@ -1229,100 +1230,100 @@ end
 
 function UseDispensers()
     if kometa.toggles.honeystorm and CheckToyCooldown('Honeystorm') then
-        repeat api.tween(1, CFrame.new(ToysFolder['Honeystorm'].Platform.CFrame.Position) * CFrame.new(0,3,0)) task.wait() VirtualPressButton('E') until not CheckToyCooldown('Honeystorm')
+        temptable.collecting.dispensers = true repeat api.tween(1, CFrame.new(ToysFolder['Honeystorm'].Platform.CFrame.Position) * CFrame.new(0,3,0)) task.wait() VirtualPressButton('E') until not CheckToyCooldown('Honeystorm') temptable.collecting.dispensers = false
     end
     if kometa.toggles.autospawnsprout and CheckToyCooldown('Sprout Summoner') then
-        repeat api.tween(1, CFrame.new(ToysFolder['Sprout Summoner'].Platform.CFrame.Position) * CFrame.new(0,3,0)) task.wait() VirtualPressButton('E') until not CheckToyCooldown('Sprout Summoner')
+        temptable.collecting.dispensers = true repeat api.tween(1, CFrame.new(ToysFolder['Sprout Summoner'].Platform.CFrame.Position) * CFrame.new(0,3,0)) task.wait() VirtualPressButton('E') until not CheckToyCooldown('Sprout Summoner') temptable.collecting.dispensers = false
     end
     if kometa.toggles.autodispense then
         if kometa.dispensesettings.rj and CheckToyCooldown('Free Royal Jelly Dispenser') then
-            repeat api.tween(1, CFrame.new(ToysFolder['Free Royal Jelly Dispenser'].Platform.CFrame.Position) * CFrame.new(0,3,0)) task.wait() VirtualPressButton('E') until not CheckToyCooldown('Free Royal Jelly Dispenser')
+            temptable.collecting.dispensers = true repeat api.tween(1, CFrame.new(ToysFolder['Free Royal Jelly Dispenser'].Platform.CFrame.Position) * CFrame.new(0,3,0)) task.wait() VirtualPressButton('E') until not CheckToyCooldown('Free Royal Jelly Dispenser') temptable.collecting.dispensers = false
         end
         if kometa.dispensesettings.blub and CheckToyCooldown('Blueberry Dispenser') then
-            repeat api.tween(1, CFrame.new(ToysFolder['Blueberry Dispenser'].Platform.CFrame.Position) * CFrame.new(0,3,0)) task.wait() VirtualPressButton('E') until not CheckToyCooldown('Blueberry Dispenser')
+            temptable.collecting.dispensers = true repeat api.tween(1, CFrame.new(ToysFolder['Blueberry Dispenser'].Platform.CFrame.Position) * CFrame.new(0,3,0)) task.wait() VirtualPressButton('E') until not CheckToyCooldown('Blueberry Dispenser') temptable.collecting.dispensers = false
         end
         if kometa.dispensesettings.straw and CheckToyCooldown('Strawberry Dispenser') then
-            repeat api.tween(1, CFrame.new(ToysFolder['Strawberry Dispenser'].Platform.CFrame.Position) * CFrame.new(0,3,0)) task.wait() VirtualPressButton('E') until not CheckToyCooldown('Strawberry Dispenser')
+            temptable.collecting.dispensers = true repeat api.tween(1, CFrame.new(ToysFolder['Strawberry Dispenser'].Platform.CFrame.Position) * CFrame.new(0,3,0)) task.wait() VirtualPressButton('E') until not CheckToyCooldown('Strawberry Dispenser') temptable.collecting.dispensers = false
         end
         if kometa.dispensesettings.treat and CheckToyCooldown('Treat Dispenser') then
-            repeat api.tween(1, CFrame.new(ToysFolder['Treat Dispenser'].Platform.CFrame.Position) * CFrame.new(0,3,0)) task.wait() VirtualPressButton('E') until not CheckToyCooldown('Treat Dispenser')
+            temptable.collecting.dispensers = true repeat api.tween(1, CFrame.new(ToysFolder['Treat Dispenser'].Platform.CFrame.Position) * CFrame.new(0,3,0)) task.wait() VirtualPressButton('E') until not CheckToyCooldown('Treat Dispenser') temptable.collecting.dispensers = false
         end
         if kometa.dispensesettings.coconut and CheckToyCooldown('Coconut Dispenser') then
-            repeat api.tween(1, CFrame.new(ToysFolder['Coconut Dispenser'].Platform.CFrame.Position) * CFrame.new(0,3,0)) task.wait() VirtualPressButton('E') until not CheckToyCooldown('Coconut Dispenser')
+            temptable.collecting.dispensers = true repeat api.tween(1, CFrame.new(ToysFolder['Coconut Dispenser'].Platform.CFrame.Position) * CFrame.new(0,3,0)) task.wait() VirtualPressButton('E') until not CheckToyCooldown('Coconut Dispenser') temptable.collecting.dispensers = false
         end
         if kometa.dispensesettings.glue and CheckToyCooldown('Glue Dispenser') then
-            repeat api.tween(1, CFrame.new(ToysFolder['Glue Dispenser'].Platform.CFrame.Position) * CFrame.new(0,3,0)) task.wait() VirtualPressButton('E') until not CheckToyCooldown('Glue Dispenser')
+            temptable.collecting.dispensers = true repeat api.tween(1, CFrame.new(ToysFolder['Glue Dispenser'].Platform.CFrame.Position) * CFrame.new(0,3,0)) task.wait() VirtualPressButton('E') until not CheckToyCooldown('Glue Dispenser') temptable.collecting.dispensers = false
         end
     end
     if kometa.toggles.autoboosters then
         if kometa.dispensesettings.white and CheckToyCooldown('Field Booster') then
-            repeat api.tween(1, CFrame.new(ToysFolder['Field Booster'].Platform.CFrame.Position) * CFrame.new(0,3,0)) task.wait() VirtualPressButton('E') until not CheckToyCooldown('Field Booster')
+            temptable.collecting.dispensers = true repeat api.tween(1, CFrame.new(ToysFolder['Field Booster'].Platform.CFrame.Position) * CFrame.new(0,3,0)) task.wait() VirtualPressButton('E') until not CheckToyCooldown('Field Booster') temptable.collecting.dispensers = false
         end
         if kometa.dispensesettings.red and CheckToyCooldown('Red Field Booster') then
-            repeat api.tween(1, CFrame.new(ToysFolder['Red Field Booster'].Platform.CFrame.Position) * CFrame.new(0,3,0)) task.wait() VirtualPressButton('E') until not CheckToyCooldown('Red Field Booster')
+            temptable.collecting.dispensers = true repeat api.tween(1, CFrame.new(ToysFolder['Red Field Booster'].Platform.CFrame.Position) * CFrame.new(0,3,0)) task.wait() VirtualPressButton('E') until not CheckToyCooldown('Red Field Booster') temptable.collecting.dispensers = false
         end
         if kometa.dispensesettings.blue and CheckToyCooldown('Blue Field Booster') then
-            repeat api.tween(1, CFrame.new(ToysFolder['Blue Field Booster'].Platform.CFrame.Position) * CFrame.new(0,3,0)) task.wait() VirtualPressButton('E') until not CheckToyCooldown('Blue Field Booster')
+            temptable.collecting.dispensers = true repeat api.tween(1, CFrame.new(ToysFolder['Blue Field Booster'].Platform.CFrame.Position) * CFrame.new(0,3,0)) task.wait() VirtualPressButton('E') until not CheckToyCooldown('Blue Field Booster') temptable.collecting.dispensers = false
         end
     end
     if kometa.toggles.clock and CheckToyCooldown('Wealth Clock') then
-        repeat api.tween(1, CFrame.new(ToysFolder['Wealth Clock'].Platform.CFrame.Position) * CFrame.new(0,3,0)) task.wait() VirtualPressButton('E') until not CheckToyCooldown('Wealth Clock')
+        temptable.collecting.dispensers = true repeat api.tween(1, CFrame.new(ToysFolder['Wealth Clock'].Platform.CFrame.Position) * CFrame.new(0,3,0)) task.wait() VirtualPressButton('E') until not CheckToyCooldown('Wealth Clock') temptable.collecting.dispensers = false
     end
     if kometa.toggles.freeantpass and CheckToyCooldown('Free Ant Pass Dispenser') and rtsg().Eggs.AntPass < 10 then
-        repeat api.tween(1, CFrame.new(ToysFolder['Free Ant Pass Dispenser'].Platform.CFrame.Position) * CFrame.new(0,3,0)) task.wait() VirtualPressButton('E') until not CheckToyCooldown('Free Ant Pass Dispenser')
+        temptable.collecting.dispensers = true repeat api.tween(1, CFrame.new(ToysFolder['Free Ant Pass Dispenser'].Platform.CFrame.Position) * CFrame.new(0,3,0)) task.wait() VirtualPressButton('E') until not CheckToyCooldown('Free Ant Pass Dispenser') temptable.collecting.dispensers = false
     end
     if kometa.toggles.freerobopass and CheckToyCooldown('Free Robo Pass Dispenser') and rtsg().Eggs.RoboPass < 10 then
-        repeat api.tween(1, CFrame.new(ToysFolder['Free Robo Pass Dispenser'].Platform.CFrame.Position) * CFrame.new(0,3,0)) task.wait() VirtualPressButton('E') until not CheckToyCooldown('Free Robo Pass Dispenser')
+        temptable.collecting.dispensers = true repeat api.tween(1, CFrame.new(ToysFolder['Free Robo Pass Dispenser'].Platform.CFrame.Position) * CFrame.new(0,3,0)) task.wait() VirtualPressButton('E') until not CheckToyCooldown('Free Robo Pass Dispenser') temptable.collecting.dispensers = false
     end
     if kometa.toggles.autosamovar and CheckToyCooldown("Samovar") and game:GetService("Workspace").Toys['Samovar']:FindFirstChild("ModelAfter") then
-        repeat api.teleport(CFrame.new(ToysFolder['Samovar'].Platform.CFrame.Position) * CFrame.new(0,3,0)) task.wait() VirtualPressButton('E') until not CheckToyCooldown('Samovar')
+        temptable.collecting.dispensers = true repeat api.teleport(CFrame.new(ToysFolder['Samovar'].Platform.CFrame.Position) * CFrame.new(0,3,0)) task.wait() VirtualPressButton('E') until not CheckToyCooldown('Samovar')
         platformm = game:GetService("Workspace").Toys.Samovar.Platform
         task.wait(2)
         for i,v in pairs(game.Workspace.Collectibles:GetChildren()) do
             if (v.Position-platformm.Position).magnitude < 25 and v.CFrame.YVector.Y == 1 then
                 repeat task.wait() api.humanoidrootpart().CFrame = CFrame.new(v.CFrame.Position) until not v or not v.Parent
             end
-        end
+        end temptable.collecting.dispensers = false
     end
     if kometa.toggles.autostockings and CheckToyCooldown("Stockings") and game:GetService("Workspace").Toys['Stockings']:FindFirstChild("ModelAfter") then
-        repeat api.tween(1, CFrame.new(ToysFolder['Stockings'].Platform.CFrame.Position) * CFrame.new(0,3,0)) task.wait() VirtualPressButton('E') until not CheckToyCooldown('Stockings')
+        temptable.collecting.dispensers = true repeat api.tween(1, CFrame.new(ToysFolder['Stockings'].Platform.CFrame.Position) * CFrame.new(0,3,0)) task.wait() VirtualPressButton('E') until not CheckToyCooldown('Stockings')
         platformm = game:GetService("Workspace").Toys.Stockings.Platform
         task.wait(2)
         for i,v in pairs(game.Workspace.Collectibles:GetChildren()) do
             if (v.Position-platformm.Position).magnitude < 25 and v.CFrame.YVector.Y == 1 then
                 repeat task.wait() api.humanoidrootpart().CFrame = CFrame.new(v.CFrame.Position) until not v or not v.Parent
             end
-        end
+        end temptable.collecting.dispensers = false
     end
     if kometa.toggles.autoonettart and CheckToyCooldown("Onett's Lid Art") and game:GetService("Workspace").Toys["Onett's Lid Art"]:FindFirstChild("ModelAfter") then
-        repeat api.teleport(CFrame.new(ToysFolder["Onett's Lid Art"].Platform.CFrame.Position) * CFrame.new(0,3,0)) task.wait() VirtualPressButton('E') until not CheckToyCooldown("Onett's Lid Art")
+        temptable.collecting.dispensers = true repeat api.teleport(CFrame.new(ToysFolder["Onett's Lid Art"].Platform.CFrame.Position) * CFrame.new(0,3,0)) task.wait() VirtualPressButton('E') until not CheckToyCooldown("Onett's Lid Art")
         platformm = game:GetService("Workspace").Toys["Onett's Lid Art"].Platform
         task.wait(2)
         for i,v in pairs(game.Workspace.Collectibles:GetChildren()) do
             if (v.Position-platformm.Position).magnitude < 25 and v.CFrame.YVector.Y == 1 then
                 repeat task.wait() api.humanoidrootpart().CFrame = CFrame.new(v.CFrame.Position) until not v or not v.Parent
             end
-        end
+        end temptable.collecting.dispensers = false
     end
     if kometa.toggles.autocandles and CheckToyCooldown("Honeyday Candles") and game:GetService("Workspace").Toys['Honeyday Candles']:FindFirstChild("ModelAfter") then
-        repeat api.tween(1, CFrame.new(ToysFolder['Honeyday Candles'].Platform.CFrame.Position) * CFrame.new(0,3,0)) task.wait() VirtualPressButton('E') until not CheckToyCooldown('Honeyday Candles')
+        temptable.collecting.dispensers = true repeat api.tween(1, CFrame.new(ToysFolder['Honeyday Candles'].Platform.CFrame.Position) * CFrame.new(0,3,0)) task.wait() VirtualPressButton('E') until not CheckToyCooldown('Honeyday Candles')
         platformm = game:GetService("Workspace").Toys["Honeyday Candles"].Platform
         task.wait(2)
         for i,v in pairs(game.Workspace.Collectibles:GetChildren()) do
             if (v.Position-platformm.Position).magnitude < 25 and v.CFrame.YVector.Y == 1 then
                 repeat task.wait() api.humanoidrootpart().CFrame = CFrame.new(v.CFrame.Position) until not v or not v.Parent
             end
-        end
+        end temptable.collecting.dispensers = false
     end
     if kometa.toggles.autofeast and CheckToyCooldown('Beesmas Feast') and game:GetService("Workspace").Toys['Beesmas Feast']:FindFirstChild("ModelAfter") then
-        repeat api.tween(1, CFrame.new(ToysFolder['Beesmas Feast'].Platform.CFrame.Position) * CFrame.new(0,3,0)) task.wait() VirtualPressButton('E') until not CheckToyCooldown('Beesmas Feast')
+        temptable.collecting.dispensers = true repeat api.tween(1, CFrame.new(ToysFolder['Beesmas Feast'].Platform.CFrame.Position) * CFrame.new(0,3,0)) task.wait() VirtualPressButton('E') until not CheckToyCooldown('Beesmas Feast')
         platformm = game:GetService("Workspace").Toys["Beesmas Feast"].Platform
         task.wait(2)
         for i,v in pairs(game.Workspace.Collectibles:GetChildren()) do
             if (v.Position-platformm.Position).magnitude < 25 and v.CFrame.YVector.Y == 1 then
                 repeat task.wait() api.humanoidrootpart().CFrame = CFrame.new(v.CFrame.Position) until not v or not v.Parent
             end
-        end
+        end temptable.collecting.dispensers = false
     end
 end
 
@@ -1732,6 +1733,7 @@ end end)
 task.spawn(function() while task.wait() do
     if temptable.collecting.tickets then continue end
     if temptable.collecting.rares then continue end
+    if temptable.collecting.dispensers then continue end
     if kometa.toggles.autofarm then
         temptable.magnitude = 70
         if game.Players.LocalPlayer.Character:FindFirstChild("ProgressLabel",true) then
