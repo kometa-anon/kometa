@@ -62,34 +62,35 @@ kometa.dark_theme = { -- dark
 	main_container = Color3.fromRGB(23, 23, 23),
 	separator_color = Color3.fromRGB(72, 72, 72),
 
+	sector_text_color = Color3.fromRGB(161, 178, 255),
 	text_color = Color3.fromRGB(206, 206, 206),
 
 	category_button_background = Color3.fromRGB(63, 62, 65),
 	category_button_border = Color3.fromRGB(72, 71, 74),
 
-	checkbox_checked = Color3.fromRGB(65, 80, 177),
+	checkbox_checked = Color3.fromRGB(84, 94, 184),
 	checkbox_outer = Color3.fromRGB(37, 34, 41),
 	checkbox_inner = Color3.fromRGB(37, 34, 41),
 
-	slider_color = Color3.fromRGB(65, 80, 177),
+	slider_color = Color3.fromRGB(84, 94, 184),
 	slider_color_sliding = Color3.fromRGB(255, 255, 255),
 	slider_background = Color3.fromRGB(37, 34, 41),
 	slider_text = Color3.fromRGB(177, 177, 177),
 
-	textbox_background = Color3.fromRGB(65, 80, 177),
+	textbox_background = Color3.fromRGB(84, 94, 184),
 	textbox_background_hover = Color3.fromRGB(76, 61, 100),
 	textbox_text = Color3.fromRGB(195, 195, 195),
 	textbox_text_hover = Color3.fromRGB(232, 232, 232),
 	textbox_placeholder = Color3.fromRGB(135, 135, 138),
 
-	dropdown_background = Color3.fromRGB(65, 80, 177),
+	dropdown_background = Color3.fromRGB(84, 94, 184),
 	dropdown_text = Color3.fromRGB(195, 195, 195),
 	dropdown_text_hover = Color3.fromRGB(255,255,255),
 	dropdown_scrollbar_color = Color3.fromRGB(255,255,255),
 
-	button_background = Color3.fromRGB(65, 80, 177),
+	button_background = Color3.fromRGB(84, 94, 184),
 	button_background_hover = Color3.fromRGB(76, 61, 100),
-	button_background_down = Color3.fromRGB(194, 141, 255),
+	button_background_down = Color3.fromRGB(150, 112, 255),
 
 	scrollbar_color = Color3.fromRGB(118, 118, 121),
 }
@@ -143,7 +144,6 @@ function kometa.new(isdark, gprojectName, thinProject)
 
 	if not kometa.gs["RunService"]:IsStudio() and self.gs["CoreGui"]:FindFirstChild(cachename) then
 		warn("kometa:", "instance already exists in coregui!")
-		
 		return
 	end
 
@@ -423,11 +423,13 @@ function kometa.new(isdark, gprojectName, thinProject)
 		
 		do
 			local uilistlayout = kometa:Create("UIListLayout", {
-				SortOrder = Enum.SortOrder.LayoutOrder
+				SortOrder = Enum.SortOrder.LayoutOrder,
+				Padding = UDim.new(0, 10)
 			})
 	
 			local uilistlayout2 = kometa:Create("UIListLayout", {
-				SortOrder = Enum.SortOrder.LayoutOrder
+				SortOrder = Enum.SortOrder.LayoutOrder,
+				Padding = UDim.new(0, 10)
 			})
 			
 			local function computeSizeChange()
@@ -452,7 +454,7 @@ function kometa.new(isdark, gprojectName, thinProject)
 		end
 		
 		category.button.MouseEnter:Connect(function()
-			kometa.gs["TweenService"]:Create(category.button, TweenInfo.new(0.2), {BackgroundTransparency = 0.5}):Play()
+			kometa.gs["TweenService"]:Create(category.button, TweenInfo.new(0.2), {BackgroundTransparency = 0.2}):Play()
 		end)
 		category.button.MouseLeave:Connect(function()
 			kometa.gs["TweenService"]:Create(category.button, TweenInfo.new(0.2), {BackgroundTransparency = 1}):Play()
@@ -518,7 +520,7 @@ function kometa.new(isdark, gprojectName, thinProject)
 				BackgroundColor3 = Color3.new(1, 1, 1),
 				BackgroundTransparency = 1,
 				Position = UDim2.new(0, 0, 0, 22),
-				Size = UDim2.new(1, -5, 1, -30),
+				Size = UDim2.new(1, -5, 1.5, -30),
 				ZIndex = 2
 			})
 
@@ -527,16 +529,16 @@ function kometa.new(isdark, gprojectName, thinProject)
 				Text = name,
 				BackgroundColor3 = Color3.new(1, 1, 1),
 				BackgroundTransparency = 1,
-				Size = UDim2.new(1, -5, 0, 25),
+				Size = UDim2.new(1, -5, 0, 23),
 				ZIndex = 2,
 				Font = Enum.Font.GothamSemibold,
-				TextColor3 = theme.text_color,
-				TextSize = 14,
+				TextColor3 = theme.sector_text_color,
+				TextSize = 16,
 				TextXAlignment = Enum.TextXAlignment.Left,
 			})
 
 			local uilistlayout = kometa:Create("UIListLayout", {
-				SortOrder = Enum.SortOrder.LayoutOrder
+				SortOrder = Enum.SortOrder.LayoutOrder,
 			})
 
             uilistlayout.Changed:Connect(function()
@@ -807,7 +809,7 @@ function kometa.new(isdark, gprojectName, thinProject)
 							ZIndex = 2,
 							Image = "rbxassetid://3570695787",
 							ImageColor3 = theme.dropdown_background,
-							ImageTransparency = 0.5,
+							ImageTransparency = 0.2,
 							ScaleType = Enum.ScaleType.Slice,
 							SliceCenter = Rect.new(100, 100, 100, 100),
 							SliceScale = 0.02
@@ -829,7 +831,7 @@ function kometa.new(isdark, gprojectName, thinProject)
 
 						cheat.list = kometa:Create("ScrollingFrame", {
 							Name = "List",
-							BackgroundColor3 = Color3.fromRGB(94, 54, 139),
+							BackgroundColor3 = Color3.fromRGB(62, 70, 134),
 							BackgroundTransparency = 0,
 							BorderSizePixel = 0,
 							Position = UDim2.new(0, 0, 1, 0),
@@ -999,7 +1001,7 @@ function kometa.new(isdark, gprojectName, thinProject)
 							ZIndex = 2,
 							Image = "rbxassetid://3570695787",
 							ImageColor3 = theme.textbox_background,
-							ImageTransparency = 0.5,
+							ImageTransparency = 0.2,
 							ScaleType = Enum.ScaleType.Slice,
 							SliceCenter = Rect.new(100, 100, 100, 100),
 							SliceScale = 0.02
@@ -1072,7 +1074,7 @@ function kometa.new(isdark, gprojectName, thinProject)
 							ZIndex = 2,
 							Image = "rbxassetid://3570695787",
 							ImageColor3 = theme.slider_background,
-							ImageTransparency = 0.5,
+							ImageTransparency = 0.2,
 							ScaleType = Enum.ScaleType.Slice,
 							SliceCenter = Rect.new(100, 100, 100, 100),
 							SliceScale = 0.02,
@@ -1197,7 +1199,7 @@ function kometa.new(isdark, gprojectName, thinProject)
 							ZIndex = 2,
 							Image = "rbxassetid://3570695787",
 							ImageColor3 = theme.button_background,
-							ImageTransparency = 0.5,
+							ImageTransparency = 0.2,
 							ScaleType = Enum.ScaleType.Slice,
 							SliceCenter = Rect.new(100, 100, 100, 100),
 							SliceScale = 0.02
@@ -1253,7 +1255,7 @@ function kometa.new(isdark, gprojectName, thinProject)
 							ZIndex = 2,
 							Image = "rbxassetid://3570695787",
 							ImageColor3 = theme.button_background,
-							ImageTransparency = 0.5,
+							ImageTransparency = 0.2,
 							ScaleType = Enum.ScaleType.Slice,
 							SliceCenter = Rect.new(100, 100, 100, 100),
 							SliceScale = 0.02
