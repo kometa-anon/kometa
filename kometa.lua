@@ -1,5 +1,5 @@
 local api = loadstring(game:HttpGet("https://raw.githubusercontent.com/kometa-anon/kometa/main/api/api.lua"))()
-local library = loadstring(game:HttpGet("https://raw.githubusercontent.com/kometa-anon/kometa/main/ui/finitytest.lua"))()
+local library = loadstring(game:HttpGet("https://raw.githubusercontent.com/kometa-anon/kometa/main/ui/finity.lua"))()
 local bssapi = loadstring(game:HttpGet("https://raw.githubusercontent.com/kometa-anon/kometa/main/api/bssapi.lua"))()
 
 if not isfolder("kometa") then makefolder("kometa") end
