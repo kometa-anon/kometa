@@ -22,7 +22,7 @@ local hi = false
 -- Script tables
 
 local temptable = {
-    version = "1.6.2",
+    version = "1.6.3",
     MondoCollectTokens = false,
     blackfield = "Ant Field",
     LastFieldColor = 'White',
@@ -1167,7 +1167,7 @@ end
 function avoidmob()
     for i,v in next, game:GetService("Workspace").Monsters:GetChildren() do
         if v:FindFirstChild("Head") then
-            if (v.Head.Position-game.Players.LocalPlayer.Character.HumanoidRootPart.Position).magnitude < 40 and api.humanoid():GetState() ~= Enum.HumanoidStateType.Freefall then
+            if (v.Head.Position-game.Players.LocalPlayer.Character.HumanoidRootPart.Position).magnitude < 35 and api.humanoid():GetState() ~= Enum.HumanoidStateType.Freefall then
                 game.Players.LocalPlayer.Character.Humanoid.Jump = true
             end
         end
@@ -1225,58 +1225,87 @@ function VirtualPressButton(Button)
 end
 
 function CheckToyCooldown(Toy)
-    return (os.time() - (rtsg().ToyTimes[Toy] or math.huge) ) > game:GetService("Workspace").Toys[Toy].Cooldown.Value or false
+    return (os.time() - (rtsg().ToyTimes[Toy] or math.huge) + 10 ) > game:GetService("Workspace").Toys[Toy].Cooldown.Value or false
 end
 
 function UseDispensers()
     if kometa.toggles.honeystorm and CheckToyCooldown('Honeystorm') then
-        repeat api.teleport(CFrame.new(ToysFolder['Honeystorm'].Platform.CFrame.Position) * CFrame.new(0,3,0)) task.wait() VirtualPressButton('E') until not CheckToyCooldown('Honeystorm') 
+        -- repeat api.teleport(CFrame.new(ToysFolder['Honeystorm'].Platform.CFrame.Position) * CFrame.new(0,3,0)) task.wait() VirtualPressButton('E') until not CheckToyCooldown('Honeystorm') 
+        api.teleport(CFrame.new(ToysFolder['Honeystorm'].Platform.CFrame.Position) * CFrame.new(0,3,0))
+        game.ReplicatedStorage.Events.ToyEvent:FireServer("Honeystorm")
     end
     if kometa.toggles.autospawnsprout and CheckToyCooldown('Sprout Summoner') then
-        repeat api.teleport(CFrame.new(ToysFolder['Sprout Summoner'].Platform.CFrame.Position) * CFrame.new(0,3,0)) task.wait() VirtualPressButton('E') until not CheckToyCooldown('Sprout Summoner') 
+        api.teleport(CFrame.new(ToysFolder['Sprout Summoner'].Platform.CFrame.Position) * CFrame.new(0,3,0))
+        game.ReplicatedStorage.Events.ToyEvent:FireServer("Sprout Summoner")
     end
     if kometa.toggles.autodispense then
         if kometa.dispensesettings.rj and CheckToyCooldown('Free Royal Jelly Dispenser') then
-            repeat api.teleport(CFrame.new(ToysFolder['Free Royal Jelly Dispenser'].Platform.CFrame.Position) * CFrame.new(0,3,0)) task.wait() VirtualPressButton('E') until not CheckToyCooldown('Free Royal Jelly Dispenser') 
+            api.teleport(CFrame.new(ToysFolder['Free Royal Jelly Dispenser'].Platform.CFrame.Position) * CFrame.new(0,3,0))
+            -- repeat api.teleport(CFrame.new(ToysFolder['Free Royal Jelly Dispenser'].Platform.CFrame.Position) * CFrame.new(0,3,0)) task.wait() VirtualPressButton('E') until not CheckToyCooldown('Free Royal Jelly Dispenser')
+            game.ReplicatedStorage.Events.ToyEvent:FireServer("Free Royal Jelly Dispenser")
         end
         if kometa.dispensesettings.blub and CheckToyCooldown('Blueberry Dispenser') then
-            repeat api.teleport(CFrame.new(ToysFolder['Blueberry Dispenser'].Platform.CFrame.Position) * CFrame.new(0,3,0)) task.wait() VirtualPressButton('E') until not CheckToyCooldown('Blueberry Dispenser') 
+            api.teleport(CFrame.new(ToysFolder['Blueberry Dispenser'].Platform.CFrame.Position) * CFrame.new(0,3,0))
+            -- repeat api.teleport(CFrame.new(ToysFolder['Blueberry Dispenser'].Platform.CFrame.Position) * CFrame.new(0,3,0)) task.wait() VirtualPressButton('E') until not CheckToyCooldown('Blueberry Dispenser') 
+            game.ReplicatedStorage.Events.ToyEvent:FireServer("Blueberry Dispenser")
         end
         if kometa.dispensesettings.straw and CheckToyCooldown('Strawberry Dispenser') then
-            repeat api.teleport(CFrame.new(ToysFolder['Strawberry Dispenser'].Platform.CFrame.Position) * CFrame.new(0,3,0)) task.wait() VirtualPressButton('E') until not CheckToyCooldown('Strawberry Dispenser') 
+            api.teleport(CFrame.new(ToysFolder['Strawberry Dispenser'].Platform.CFrame.Position) * CFrame.new(0,3,0))
+            -- repeat api.teleport(CFrame.new(ToysFolder['Strawberry Dispenser'].Platform.CFrame.Position) * CFrame.new(0,3,0)) task.wait() VirtualPressButton('E') until not CheckToyCooldown('Strawberry Dispenser') 
+            game.ReplicatedStorage.Events.ToyEvent:FireServer("Strawberry Dispenser")
         end
         if kometa.dispensesettings.treat and CheckToyCooldown('Treat Dispenser') then
-            repeat api.teleport(CFrame.new(ToysFolder['Treat Dispenser'].Platform.CFrame.Position) * CFrame.new(0,3,0)) task.wait() VirtualPressButton('E') until not CheckToyCooldown('Treat Dispenser') 
+            api.teleport(CFrame.new(ToysFolder['Treat Dispenser'].Platform.CFrame.Position) * CFrame.new(0,3,0))
+            -- repeat api.teleport(CFrame.new(ToysFolder['Treat Dispenser'].Platform.CFrame.Position) * CFrame.new(0,3,0)) task.wait() VirtualPressButton('E') until not CheckToyCooldown('Treat Dispenser') 
+            game.ReplicatedStorage.Events.ToyEvent:FireServer("Treat Dispenser")
         end
         if kometa.dispensesettings.coconut and CheckToyCooldown('Coconut Dispenser') then
-            repeat api.teleport(CFrame.new(ToysFolder['Coconut Dispenser'].Platform.CFrame.Position) * CFrame.new(0,3,0)) task.wait() VirtualPressButton('E') until not CheckToyCooldown('Coconut Dispenser') 
+            api.teleport(CFrame.new(ToysFolder['Coconut Dispenser'].Platform.CFrame.Position) * CFrame.new(0,3,0))
+            -- repeat api.teleport(CFrame.new(ToysFolder['Coconut Dispenser'].Platform.CFrame.Position) * CFrame.new(0,3,0)) task.wait() VirtualPressButton('E') until not CheckToyCooldown('Coconut Dispenser') 
+            game.ReplicatedStorage.Events.ToyEvent:FireServer("Coconut Dispenser")
         end
         if kometa.dispensesettings.glue and CheckToyCooldown('Glue Dispenser') then
-            repeat api.teleport(CFrame.new(ToysFolder['Glue Dispenser'].Platform.CFrame.Position) * CFrame.new(0,3,0)) task.wait() VirtualPressButton('E') until not CheckToyCooldown('Glue Dispenser') 
+            api.teleport(CFrame.new(ToysFolder['Glue Dispenser'].Platform.CFrame.Position) * CFrame.new(0,3,0))
+            -- repeat api.teleport(CFrame.new(ToysFolder['Glue Dispenser'].Platform.CFrame.Position) * CFrame.new(0,3,0)) task.wait() VirtualPressButton('E') until not CheckToyCooldown('Glue Dispenser') 
+            game.ReplicatedStorage.Events.ToyEvent:FireServer("Glue Dispenser")
         end
     end
     if kometa.toggles.autoboosters then
         if kometa.dispensesettings.white and CheckToyCooldown('Field Booster') then
-            repeat api.teleport(CFrame.new(ToysFolder['Field Booster'].Platform.CFrame.Position) * CFrame.new(0,3,0)) task.wait() VirtualPressButton('E') until not CheckToyCooldown('Field Booster') 
+            api.teleport(CFrame.new(ToysFolder['Field Booster'].Platform.CFrame.Position) * CFrame.new(0,3,0))
+            -- repeat api.teleport(CFrame.new(ToysFolder['Field Booster'].Platform.CFrame.Position) * CFrame.new(0,3,0)) task.wait() VirtualPressButton('E') until not CheckToyCooldown('Field Booster') 
+            game.ReplicatedStorage.Events.ToyEvent:FireServer("Field Booster")
         end
         if kometa.dispensesettings.red and CheckToyCooldown('Red Field Booster') then
-            repeat api.teleport(CFrame.new(ToysFolder['Red Field Booster'].Platform.CFrame.Position) * CFrame.new(0,3,0)) task.wait() VirtualPressButton('E') until not CheckToyCooldown('Red Field Booster') 
+            api.teleport(CFrame.new(ToysFolder['Red Field Booster'].Platform.CFrame.Position) * CFrame.new(0,3,0))
+            -- repeat api.teleport(CFrame.new(ToysFolder['Red Field Booster'].Platform.CFrame.Position) * CFrame.new(0,3,0)) task.wait() VirtualPressButton('E') until not CheckToyCooldown('Red Field Booster') 
+            game.ReplicatedStorage.Events.ToyEvent:FireServer("Red Field Booster")
         end
         if kometa.dispensesettings.blue and CheckToyCooldown('Blue Field Booster') then
-            repeat api.teleport(CFrame.new(ToysFolder['Blue Field Booster'].Platform.CFrame.Position) * CFrame.new(0,3,0)) task.wait() VirtualPressButton('E') until not CheckToyCooldown('Blue Field Booster') 
+            api.teleport(CFrame.new(ToysFolder['Blue Field Booster'].Platform.CFrame.Position) * CFrame.new(0,3,0))
+            -- repeat api.teleport(CFrame.new(ToysFolder['Blue Field Booster'].Platform.CFrame.Position) * CFrame.new(0,3,0)) task.wait() VirtualPressButton('E') until not CheckToyCooldown('Blue Field Booster') 
+            game.ReplicatedStorage.Events.ToyEvent:FireServer("Blue Field Booster")
         end
     end
     if kometa.toggles.clock and CheckToyCooldown('Wealth Clock') then
-        repeat api.teleport(CFrame.new(ToysFolder['Wealth Clock'].Platform.CFrame.Position) * CFrame.new(0,3,0)) task.wait() VirtualPressButton('E') until not CheckToyCooldown('Wealth Clock') 
+        api.teleport(CFrame.new(ToysFolder['Wealth Clock'].Platform.CFrame.Position) * CFrame.new(0,3,0))
+        -- repeat api.teleport(CFrame.new(ToysFolder['Wealth Clock'].Platform.CFrame.Position) * CFrame.new(0,3,0)) task.wait() VirtualPressButton('E') until not CheckToyCooldown('Wealth Clock') 
+        game.ReplicatedStorage.Events.ToyEvent:FireServer("Wealth Clock")
     end
     if kometa.toggles.freeantpass and CheckToyCooldown('Free Ant Pass Dispenser') and rtsg().Eggs.AntPass < 10 then
-        repeat api.teleport(CFrame.new(ToysFolder['Free Ant Pass Dispenser'].Platform.CFrame.Position) * CFrame.new(0,3,0)) task.wait() VirtualPressButton('E') until not CheckToyCooldown('Free Ant Pass Dispenser') 
+        api.teleport(CFrame.new(ToysFolder['Free Ant Pass Dispenser'].Platform.CFrame.Position) * CFrame.new(0,3,0))
+        -- repeat api.teleport(CFrame.new(ToysFolder['Free Ant Pass Dispenser'].Platform.CFrame.Position) * CFrame.new(0,3,0)) task.wait() VirtualPressButton('E') until not CheckToyCooldown('Free Ant Pass Dispenser') 
+        game.ReplicatedStorage.Events.ToyEvent:FireServer("Free Ant Pass Dispenser")
     end
     if kometa.toggles.freerobopass and CheckToyCooldown('Free Robo Pass Dispenser') and rtsg().Eggs.RoboPass < 10 then
-        repeat api.teleport(CFrame.new(ToysFolder['Free Robo Pass Dispenser'].Platform.CFrame.Position) * CFrame.new(0,3,0)) task.wait() VirtualPressButton('E') until not CheckToyCooldown('Free Robo Pass Dispenser') 
+        api.teleport(CFrame.new(ToysFolder['Free Robo Pass Dispenser'].Platform.CFrame.Position) * CFrame.new(0,3,0))
+        -- repeat api.teleport(CFrame.new(ToysFolder['Free Robo Pass Dispenser'].Platform.CFrame.Position) * CFrame.new(0,3,0)) task.wait() VirtualPressButton('E') until not CheckToyCooldown('Free Robo Pass Dispenser') 
+        game.ReplicatedStorage.Events.ToyEvent:FireServer("Free Robo Pass Dispenser")
     end
     if kometa.toggles.autosamovar and CheckToyCooldown("Samovar") and game:GetService("Workspace").Toys['Samovar']:FindFirstChild("ModelAfter") then
-        repeat api.teleport(CFrame.new(ToysFolder['Samovar'].Platform.CFrame.Position) * CFrame.new(0,3,0)) task.wait() VirtualPressButton('E') until not CheckToyCooldown('Samovar')
+        -- repeat api.teleport(CFrame.new(ToysFolder['Samovar'].Platform.CFrame.Position) * CFrame.new(0,3,0)) task.wait() VirtualPressButton('E') until not CheckToyCooldown('Samovar')
+        api.teleport(CFrame.new(ToysFolder['Samovar'].Platform.CFrame.Position) * CFrame.new(0,3,0))
+        game.ReplicatedStorage.Events.ToyEvent:FireServer("Samovar")
         platformm = game:GetService("Workspace").Toys.Samovar.Platform
         task.wait(2)
         for i,v in pairs(game.Workspace.Collectibles:GetChildren()) do
@@ -1286,44 +1315,24 @@ function UseDispensers()
         end 
     end
     if kometa.toggles.autostockings and CheckToyCooldown("Stockings") and game:GetService("Workspace").Toys['Stockings']:FindFirstChild("ModelAfter") then
-        repeat api.teleport(CFrame.new(ToysFolder['Stockings'].Platform.CFrame.Position) * CFrame.new(0,3,0)) task.wait() VirtualPressButton('E') until not CheckToyCooldown('Stockings')
-        platformm = game:GetService("Workspace").Toys.Stockings.Platform
-        task.wait(2)
-        for i,v in pairs(game.Workspace.Collectibles:GetChildren()) do
-            if (v.Position-platformm.Position).magnitude < 25 and v.CFrame.YVector.Y == 1 then
-                repeat task.wait() api.humanoidrootpart().CFrame = CFrame.new(v.CFrame.Position) until not v or not v.Parent
-            end
-        end 
+        -- repeat api.teleport(CFrame.new(ToysFolder['Stockings'].Platform.CFrame.Position) * CFrame.new(0,3,0)) task.wait() VirtualPressButton('E') until not CheckToyCooldown('Stockings')
+        api.teleport(CFrame.new(ToysFolder['Stockings'].Platform.CFrame.Position) * CFrame.new(0,3,0))
+        game.ReplicatedStorage.Events.ToyEvent:FireServer("Stockings")
     end
     if kometa.toggles.autoonettart and CheckToyCooldown("Onett's Lid Art") and game:GetService("Workspace").Toys["Onett's Lid Art"]:FindFirstChild("ModelAfter") then
-        repeat api.teleport(CFrame.new(ToysFolder["Onett's Lid Art"].Platform.CFrame.Position) * CFrame.new(0,3,0)) task.wait() VirtualPressButton('E') until not CheckToyCooldown("Onett's Lid Art")
-        platformm = game:GetService("Workspace").Toys["Onett's Lid Art"].Platform
-        task.wait(2)
-        for i,v in pairs(game.Workspace.Collectibles:GetChildren()) do
-            if (v.Position-platformm.Position).magnitude < 25 and v.CFrame.YVector.Y == 1 then
-                repeat task.wait() api.humanoidrootpart().CFrame = CFrame.new(v.CFrame.Position) until not v or not v.Parent
-            end
-        end 
+        -- repeat api.teleport(CFrame.new(ToysFolder["Onett's Lid Art"].Platform.CFrame.Position) * CFrame.new(0,3,0)) task.wait() VirtualPressButton('E') until not CheckToyCooldown("Onett's Lid Art")
+        api.teleport(CFrame.new(ToysFolder["Onett's Lid Art"].Platform.CFrame.Position) * CFrame.new(0,3,0))
+        game.ReplicatedStorage.Events.ToyEvent:FireServer("Onett's Lid Art")
     end
     if kometa.toggles.autocandles and CheckToyCooldown("Honeyday Candles") and game:GetService("Workspace").Toys['Honeyday Candles']:FindFirstChild("ModelAfter") then
-        repeat api.teleport(CFrame.new(ToysFolder['Honeyday Candles'].Platform.CFrame.Position) * CFrame.new(0,3,0)) task.wait() VirtualPressButton('E') until not CheckToyCooldown('Honeyday Candles')
-        platformm = game:GetService("Workspace").Toys["Honeyday Candles"].Platform
-        task.wait(2)
-        for i,v in pairs(game.Workspace.Collectibles:GetChildren()) do
-            if (v.Position-platformm.Position).magnitude < 25 and v.CFrame.YVector.Y == 1 then
-                repeat task.wait() api.humanoidrootpart().CFrame = CFrame.new(v.CFrame.Position) until not v or not v.Parent
-            end
-        end 
+        -- repeat api.teleport(CFrame.new(ToysFolder['Honeyday Candles'].Platform.CFrame.Position) * CFrame.new(0,3,0)) task.wait() VirtualPressButton('E') until not CheckToyCooldown('Honeyday Candles')
+        api.teleport(CFrame.new(ToysFolder['Honeyday Candles'].Platform.CFrame.Position) * CFrame.new(0,3,0))
+        game.ReplicatedStorage.Events.ToyEvent:FireServer("Honeyday Candles")
     end
     if kometa.toggles.autofeast and CheckToyCooldown('Beesmas Feast') and game:GetService("Workspace").Toys['Beesmas Feast']:FindFirstChild("ModelAfter") then
-        repeat api.teleport(CFrame.new(ToysFolder['Beesmas Feast'].Platform.CFrame.Position) * CFrame.new(0,3,0)) task.wait() VirtualPressButton('E') until not CheckToyCooldown('Beesmas Feast')
-        platformm = game:GetService("Workspace").Toys["Beesmas Feast"].Platform
-        task.wait(2)
-        for i,v in pairs(game.Workspace.Collectibles:GetChildren()) do
-            if (v.Position-platformm.Position).magnitude < 25 and v.CFrame.YVector.Y == 1 then
-                repeat task.wait() api.humanoidrootpart().CFrame = CFrame.new(v.CFrame.Position) until not v or not v.Parent
-            end
-        end 
+        -- repeat api.teleport(CFrame.new(ToysFolder['Beesmas Feast'].Platform.CFrame.Position) * CFrame.new(0,3,0)) task.wait() VirtualPressButton('E') until not CheckToyCooldown('Beesmas Feast')
+        api.teleport(CFrame.new(ToysFolder['Beesmas Feast'].Platform.CFrame.Position) * CFrame.new(0,3,0))
+        game.ReplicatedStorage.Events.ToyEvent:FireServer("Beesmas Feast")
     end
 end
 
@@ -1505,6 +1514,7 @@ misco:Cheat("Dropdown", "Equip Masks", function(Option) local ohString1 = "Equip
 misco:Cheat("Dropdown", "Equip Collectors", function(Option) local ohString1 = "Equip" local ohTable2 = { ["Mute"] = false, ["Type"] = Option, ["Category"] = "Collector" } game:GetService("ReplicatedStorage").Events.ItemPackageEvent:InvokeServer(ohString1, ohTable2) end, {options = collectorstable})
 misco:Cheat("Dropdown", "Generate Amulet", function(Option) local A_1 = Option.." Generator" local Event = game:GetService("ReplicatedStorage").Events.ToyEvent Event:FireServer(A_1) end, {options = {"Supreme Star Amulet", "Diamond Star Amulet", "Gold Star Amulet","Silver Star Amulet","Bronze Star Amulet","Moon Amulet"}})
 misco:Cheat("Button", "Export Stats Table", function() local StatCache = require(game.ReplicatedStorage.ClientStatCache)writefile("Stats_"..api.nickname..".json", StatCache:Encode()) end, {text = ''})
+if temptable.WebSocket then misco:Cheat('Button', "Disable Websocket", function() temptable.WebSocket:Close() end, {text = ''}) end
 misco:Cheat("Textbox", "Ping Spoofer", function(Option) settings():GetService("NetworkSettings").IncomingReplicationLag = tonumber(Option)/1000 or 0 end, {placeholder = 'Add ms to ping'})
 
 local extras = extrtab:Sector("Extras")
@@ -1704,7 +1714,7 @@ game.Workspace.Particles.Snowflakes.ChildAdded:Connect(function(Object)
     if kometa.toggles.farmsnowflakes and temptable.collecting.snowflake == false then farmsnowflakes(Object) end
 end)
 
-task.spawn(function() while task.wait() do
+task.spawn(function() while task.wait(5) do
     UseDispensers()
 end end)
 
@@ -1945,7 +1955,11 @@ end end)
 
 task.spawn(function() while task.wait(0.001) do
     -- if kometa.toggles.traincrab then game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-259, 111.8, 496.4) * CFrame.fromEulerAnglesXYZ(0, 110, 90) temptable.float = true temptable.float = false end
-    if kometa.toggles.autodig then if game.Players.LocalPlayer and game.Players.LocalPlayer.Character and game.Players.LocalPlayer.Character:FindFirstChildOfClass("Tool") and game.Players.LocalPlayer.Character:FindFirstChildOfClass('Tool'):FindFirstChild('ClientScriptMouse') then getsenv(game.Players.LocalPlayer.Character:FindFirstChildOfClass('Tool').ClientScriptMouse).collectStart() --[[ if game.Players.LocalPlayer.Character:FindFirstChildOfClass("Tool"):FindFirstChild("ClickEvent", true) then clickevent = game.Players.LocalPlayer.Character:FindFirstChildOfClass("Tool"):FindFirstChild("ClickEvent", true) or nil end end end if clickevent then clickevent:FireServer() ]] end end
+    if kometa.toggles.autodig then 
+        if game.Players.LocalPlayer and game.Players.LocalPlayer.Character and game.Players.LocalPlayer.Character:FindFirstChildOfClass("Tool") and game.Players.LocalPlayer.Character:FindFirstChildOfClass('Tool'):FindFirstChild('ClientScriptMouse') then
+            pcall(function()getsenv(game.Players.LocalPlayer.Character:FindFirstChildOfClass('Tool').ClientScriptMouse).collectStart()end)
+        end 
+    end
 end end)
 
 game:GetService("Workspace").Particles.Folder2.ChildAdded:Connect(function(child)
@@ -1997,51 +2011,46 @@ task.spawn(function() while task.wait(.1) do
                 end
             end
         end
-        -- if kometa.toggles.autosamovar then
-        --     game:GetService("ReplicatedStorage").Events.ToyEvent:FireServer("Samovar")
-        --     platformm = game:GetService("Workspace").Toys.Samovar.Platform
-        --     for i,v in pairs(game.Workspace.Collectibles:GetChildren()) do
-        --         if (v.Position-platformm.Position).magnitude < 25 and v.CFrame.YVector.Y == 1 then
-        --             api.humanoidrootpart().CFrame = v.CFrame
-        --         end
-        --     end
-        -- end
-        -- if kometa.toggles.autostockings then
-        --     game:GetService("ReplicatedStorage").Events.ToyEvent:FireServer("Stockings")
-        --     platformm = game:GetService("Workspace").Toys.Stockings.Platform
-        --     for i,v in pairs(game.Workspace.Collectibles:GetChildren()) do
-        --         if (v.Position-platformm.Position).magnitude < 25 and v.CFrame.YVector.Y == 1 then
-        --             api.humanoidrootpart().CFrame = v.CFrame
-        --         end
-        --     end
-        -- end
-        -- if kometa.toggles.autoonettart then
-        --     game:GetService("ReplicatedStorage").Events.ToyEvent:FireServer("Onett's Lid Art")
-        --     platformm = game:GetService("Workspace").Toys["Onett's Lid Art"].Platform
-        --     for i,v in pairs(game.Workspace.Collectibles:GetChildren()) do
-        --         if (v.Position-platformm.Position).magnitude < 25 and v.CFrame.YVector.Y == 1 then
-        --             api.humanoidrootpart().CFrame = v.CFrame
-        --         end
-        --     end
-        -- end
-        -- if kometa.toggles.autocandles then
-        --     game:GetService("ReplicatedStorage").Events.ToyEvent:FireServer("Honeyday Candles")
-        --     platformm = game:GetService("Workspace").Toys["Honeyday Candles"].Platform
-        --     for i,v in pairs(game.Workspace.Collectibles:GetChildren()) do
-        --         if (v.Position-platformm.Position).magnitude < 25 and v.CFrame.YVector.Y == 1 then
-        --             api.humanoidrootpart().CFrame = v.CFrame
-        --         end
-        --     end
-        -- end
-        -- if kometa.toggles.autofeast then
-        --     game:GetService("ReplicatedStorage").Events.ToyEvent:FireServer("Beesmas Feast")
-        --     platformm = game:GetService("Workspace").Toys["Beesmas Feast"].Platform
-        --     for i,v in pairs(game.Workspace.Collectibles:GetChildren()) do
-        --         if (v.Position-platformm.Position).magnitude < 25 and v.CFrame.YVector.Y == 1 then
-        --             api.humanoidrootpart().CFrame = v.CFrame
-        --         end
-        --     end
-        -- end
+        if kometa.toggles.autosamovar then
+            platformm = game:GetService("Workspace").Toys.Samovar.Platform
+            for i,v in pairs(game.Workspace.Collectibles:GetChildren()) do
+                if (v.Position-platformm.Position).magnitude < 25 and v.CFrame.YVector.Y == 1 then
+                    api.humanoidrootpart().CFrame = v.CFrame
+                end
+            end
+        end
+        if kometa.toggles.autostockings then
+            platformm = game:GetService("Workspace").Toys.Stockings.Platform
+            for i,v in pairs(game.Workspace.Collectibles:GetChildren()) do
+                if (v.Position-platformm.Position).magnitude < 25 and v.CFrame.YVector.Y == 1 then
+                    api.humanoidrootpart().CFrame = v.CFrame
+                end
+            end
+        end
+        if kometa.toggles.autoonettart then
+            platformm = game:GetService("Workspace").Toys["Onett's Lid Art"].Platform
+            for i,v in pairs(game.Workspace.Collectibles:GetChildren()) do
+                if (v.Position-platformm.Position).magnitude < 25 and v.CFrame.YVector.Y == 1 then
+                    api.humanoidrootpart().CFrame = v.CFrame
+                end
+            end
+        end
+        if kometa.toggles.autocandles then
+            platformm = game:GetService("Workspace").Toys["Honeyday Candles"].Platform
+            for i,v in pairs(game.Workspace.Collectibles:GetChildren()) do
+                if (v.Position-platformm.Position).magnitude < 25 and v.CFrame.YVector.Y == 1 then
+                    api.humanoidrootpart().CFrame = v.CFrame
+                end
+            end
+        end
+        if kometa.toggles.autofeast then
+            platformm = game:GetService("Workspace").Toys["Beesmas Feast"].Platform
+            for i,v in pairs(game.Workspace.Collectibles:GetChildren()) do
+                if (v.Position-platformm.Position).magnitude < 25 and v.CFrame.YVector.Y == 1 then
+                    api.humanoidrootpart().CFrame = v.CFrame
+                end
+            end
+        end
     end
 end end)
 
@@ -2244,10 +2253,38 @@ game:GetService("UserInputService").WindowFocusReleased:Connect(function()
     end
 end)
 
+for _, Gate in next, workspace.Gates:GetDescendants() do 
+    if Gate:IsA("BasePart") and string.find(Gate.parent.Name, "Bee Gate") then 
+        Gate.CanCollide = false 
+        Gate.Transparency = Gate.Transparency < 0.5 and 0.5 or Gate.Transparency
+        task.wait() 
+    end 
+end
+
+for _, Part in next, workspace:FindFirstChild("FieldDecos"):GetDescendants() do 
+    if Part:IsA("BasePart") then 
+        Part.CanCollide = false 
+        Part.Transparency = Part.Transparency < 0.5 and 0.5 or Part.Transparency 
+        task.wait() 
+    end 
+end
+
+for _, Part in next, workspace:FindFirstChild("Decorations"):GetDescendants() do 
+    if Part:IsA("BasePart") and (Part.Parent.Name == "Bush" or Part.Parent.Name == "Blue Flower") then 
+        Part.CanCollide = false 
+        Part.Transparency = Part.Transparency < 0.5 and 0.5 or Part.Transparency 
+        task.wait() 
+    end 
+end
+
+for _, Part in next, workspace.Decorations.Misc:GetDescendants() do 
+    if Part.Parent.Name == "Mushroom" then 
+        Part.CanCollide = false 
+        Part.Transparency = 0.5 
+    end 
+end
+
 setfflag("HumanoidParallelRemoveNoPhysics", "False")setfflag("HumanoidParallelRemoveNoPhysicsNoSimulate2", "False")
 hives = game.Workspace.Honeycombs:GetChildren() for i = #hives, 1, -1 do  v = game.Workspace.Honeycombs:GetChildren()[i] if v.Owner.Value == nil then game.ReplicatedStorage.Events.ClaimHive:FireServer(v.HiveID.Value) end end
 if _G.autoload then if isfile("kometa/BSS_".._G.autoload..".json") then kometa = game:service'HttpService':JSONDecode(readfile("kometa/BSS_".._G.autoload..".json")) end end
-for _, part in next, workspace:FindFirstChild("FieldDecos"):GetDescendants() do if part:IsA("BasePart") then part.CanCollide = false part.Transparency = part.Transparency < 0.5 and 0.5 or part.Transparency task.wait() end end
-for _, part in next, workspace:FindFirstChild("Decorations"):GetDescendants() do if part:IsA("BasePart") and (part.Parent.Name == "Bush" or part.Parent.Name == "Blue Flower") then part.CanCollide = false part.Transparency = part.Transparency < 0.5 and 0.5 or part.Transparency task.wait() end end
-for i,v in next, workspace.Decorations.Misc:GetDescendants() do if v.Parent.Name == "Mushroom" then v.CanCollide = false v.Transparency = 0.5 end end
 game:GetService("Players").LocalPlayer.PlayerGui.ScreenGui.BeePopUp.MutationFrame.MutationLabel.Text = ""
