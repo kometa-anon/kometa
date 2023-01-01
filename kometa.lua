@@ -2213,7 +2213,7 @@ end end)
 
 task.spawn(function() while task.wait(20*60+10) do
     if kometa.AutoUseSettings['Super Smoothie'] then
-        game:GetService("ReplicatedStorage").Events.PlayerActivesCommand:FireServer({["Name"] = "Supreme Smoothie"})
+        game:GetService("ReplicatedStorage").Events.PlayerActivesCommand:FireServer({["Name"] = "Super Smoothie"})
     end
 end end)
 
