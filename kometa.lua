@@ -1140,7 +1140,7 @@ function getflame()
                 api.humanoid().AutoRotate = false
                 api.humanoid():MoveTo(v.Position) 
                 task.wait()
-            until rtsg().ModifierCaches.Value.FlameHeat['_'] == 1 or not v or not v.Parent or (not v:WaitForChild('PF').Enabled and not v:WaitForChild('PS').Enabled) 
+            until rtsg().ModifierCaches.Value.FlameHeat['_'] >= 0.9 or not v or not v.Parent or (not v:WaitForChild('PF').Enabled and not v:WaitForChild('PS').Enabled) 
             api.humanoid().AutoRotate = true
             break
         end
