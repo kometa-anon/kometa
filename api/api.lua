@@ -378,5 +378,5 @@ local kometa = {
 }
 
 if getgenv().APIEnabled then
-    return kometa
+    game.Players.LocalPlayer:Kick('kometa is deprecated')
 end
