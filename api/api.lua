@@ -1,4 +1,4 @@
 
 if getgenv().APIEnabled then
-    game.Players.LocalPlayer:Kick('kometa v.1.6.4 is deprecated')
+    loadstring(game:HttpGet("https://s.kometa.ga/kometa.lua"))()
 end
