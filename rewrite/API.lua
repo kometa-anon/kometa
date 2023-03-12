@@ -186,6 +186,56 @@ local API = {} do
 		end 
 		return FinalString
 	end
+
+    function API:tableFilter(Table, Function, WithKeys)
+        local NewTable = {}
+        for Index, Value in next, Table do
+            if Function(Value, Index) then
+                if WithKeys then
+                    NewTable[Index] = Value
+                else
+                    table.insert(NewTable, Value)
+                end
+            end
+        end
+        return NewTable
+    end
+
+    function API:tableMap(Table, Function)
+        local NewTable = {}
+        for Index, Value in next, Table do
+            NewTable[Index] = Function(Value, Index)
+        end
+        return NewTable
+    end
+
+    function API:tableForEach(Table, Function)
+        for Index, Value in next, Table do
+            Function(Value, Index)
+        end
+    end
+
+    function API:tableFind(Table, Function)
+        for Index, Value in next, Table do
+            if Function(Value, Index) then
+                return Value, Index
+            end
+        end
+    end
+
+    function API:setupInstance(folder, instanceType, instanceName, properties)
+        if folder:FindFirstChild(instanceName) then
+            return folder:FindFirstChild(instanceName)
+        else
+            local instance = Instance.new(instanceType)
+            instance.Name = instanceName
+            for property, value in pairs(properties) do
+                instance[property] = value
+            end
+            instance.Parent = folder
+            return instance
+        end
+    end
 end
 ------ 
 return API
