@@ -89,6 +89,15 @@ table.map = function(originalTable, mapFunction)
     return newTable or nil
 end
 
+-- Table Remove by Value
+table.removeByValue = function(originalTable, valueToRemove)
+    for key, value in next, originalTable do
+        if value == valueToRemove then
+            return table.remove(originalTable, key)
+        end
+    end
+end
+
 -- Table For Each
 table.forEach = function(originalTable, forEachFunction)
     for key, value in next, originalTable do
