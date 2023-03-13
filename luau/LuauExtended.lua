@@ -1,3 +1,10 @@
+--[[
+    Luau Extended. A library that extends the default Luau functions.
+    Made by: notweuz
+    Probably will be used only by kometa.
+    If you want to use it, go ahead.
+]]
+
 -- Making all needed tables writable. Screw you, default Luau.
 setreadonly(table, false)
 setreadonly(Instance, false)
