@@ -5,10 +5,18 @@
     If you want to use it, go ahead.
 ]]
 
+-- Check if executor is supported
+if not setreadonly then
+    return warn("Your executor is not supported.")
+end
+
+local luauExtendedVersion = "1.0"
+
 -- Making all needed tables writable. Screw you, default Luau.
 setreadonly(table, false)
 setreadonly(Instance, false)
 setreadonly(math, false)
+setreadonly(string, false)
 
 -- Old Functions
 oldTableSort = table.sort
@@ -89,6 +97,24 @@ table.map = function(originalTable, mapFunction)
     return newTable or nil
 end
 
+-- Table Get Keys
+table.getKeys = function(originalTable)
+    local newTable = {}
+    for key, _ in next, originalTable do
+        table.insert(newTable, key)
+    end
+    return newTable or nil
+end
+
+-- Table Swap Keys and Values
+table.keyValueSwap = function(originalTable)
+    local newTable = {}
+    for key, value in next, originalTable do
+        newTable[value] = key
+    end
+    return newTable or nil
+end
+
 -- Table Remove by Value
 table.removeByValue = function(originalTable, valueToRemove)
     for key, value in next, originalTable do
@@ -129,3 +155,13 @@ end
 math.randomFloat = function(min, max)
     return math.random() * (max - min) + min
 end
+
+-- String Replace
+string.replace = function(originalString, stringToReplace, replacementString) -- I hate gsub, so I made this.
+    return originalString:gsub(stringToReplace, replacementString)
+end
+
+-- Luau Extended Custom Module
+getgenv().luauExtended = {
+    version = luauExtendedVersion,
+}
