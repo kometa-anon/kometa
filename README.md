@@ -7,7 +7,6 @@
     <img src="https://img.shields.io/github/commit-activity/m/kometa-anon/kometa">
     <img src="https://img.shields.io/github/contributors/kometa-anon/kometa">
 </h2>
-<h1></h1>
 <h2 align = "center">
     <img src = "https://media.discordapp.net/attachments/740673508014817353/1085255610511130714/kometa_banner_no_gradient_1.gif">
 </h2>
