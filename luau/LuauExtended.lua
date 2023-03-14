@@ -10,7 +10,7 @@ if not setreadonly then
     return warn("Your executor is not supported.")
 end
 
-local luauExtendedVersion = "1.1"
+local luauExtendedVersion = "1.2"
 
 -- Making all needed tables writable. Screw you, default Luau.
 setreadonly(table, false)
@@ -146,14 +146,18 @@ Instance.create = function(instanceType, properties)
     return newInstance or nil
 end
 
--- Instance Get
-Instance.get = function(instancePath, instanceName, instanceType, instanceProperties)
-    local instance = instancePath:FindFirstChild(instanceName) or nil
+-- Instance Setup
+Instance.setup = function(instancePath, instanceType, instanceName, instanceProperties)
+    local instance = instancePath:FindFirstChild(instanceName)
+    instanceProperties = instanceProperties or {}
+    if not instanceProperties["Name"] then
+        instanceProperties["Name"] = instanceName
+    end
+
     if not instance then
         instance = Instance.create(instanceType, instanceProperties)
-        instance.Name = instanceName
-        instance.Parent = instancePath
     end
+
     return instance or nil
 end
 
