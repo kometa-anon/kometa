@@ -107,7 +107,7 @@ table.getKeys = function(originalTable)
 end
 
 -- Table Swap Keys and Values
-table.keyValueSwap = function(originalTable)
+table.flip = function(originalTable)
     local newTable = {}
     for key, value in next, originalTable do
         newTable[value] = key
