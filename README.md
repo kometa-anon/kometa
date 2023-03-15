@@ -32,13 +32,9 @@
     You can use it by adding this line somewhere in your script:
 </font>
 
-<<<<<<< HEAD
 ```lua
 loadstring(game:HttpGet("https://raw.githubusercontent.com/kometa-anon/kometa/main/luau/LuauExtended.lua"))()
 ```
 <font size = "4">
     In future we will add examples how to use it in your scripts.
 </font>
-=======
-    loadstring(game:HttpGet("https://raw.githubusercontent.com/kometa-anon/kometa/main/luau/LuauExtended.lua"))()
->>>>>>> 28a7a5191cfe97b0f9318c23fd966dd9e10f97a5
