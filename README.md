@@ -6,20 +6,22 @@
 # <font size = "6"> What is kometa?</font>
 <font size = "4">
     kometa is a Luau script divided into two versions:
-    <li>
-        <b>kometa v1</b>
-        <x>
-            (in future - legacy)
-        </x> - fully free, less customizable. Works only in Bee Swarm Simulator.
-    </li>
-    <li>
-        <a href = "https://buy.kometa.pw/">
-            <b>kometa v2</b>
-        </a> 
-        <x>
-            (in future - hub)
-        </x> - paid, fully customizable, more features, more stable. Right now works only in Bee Swarm Simulator, but we're making Blox Fruit and Pet Simulator X right now. Also it will include universal functions too.
-    </li>
+    <p>
+        <li>
+            <b>kometa v1</b>
+            <x>
+                (in future - legacy)
+            </x> - fully free, less customizable. Works only in Bee Swarm Simulator.
+        </li>
+        <li>
+            <a href = "https://buy.kometa.pw/">
+                <b>kometa v2</b>
+            </a> 
+            <x>
+                (in future - hub)
+            </x> - paid, fully customizable, more features, more stable. Right now works only in Bee Swarm Simulator, but we're making Blox Fruit and Pet Simulator X right now. Also it will include universal functions too.
+        </li>
+    </p>
 </font>
 
 <font size = "4">
