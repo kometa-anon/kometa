@@ -47,7 +47,7 @@ end
 
 -- Table Insert
 table.insert = function(originalTable, value, valuePosition)
-    oldTableInsert(originalTable, valuePosition or #originalTable+1, value)
+    oldTableInsert(originalTable, tonumber(valuePosition) or #originalTable+1, value)
     return originalTable or nil
 end
 
