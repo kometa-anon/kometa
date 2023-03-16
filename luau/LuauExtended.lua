@@ -46,8 +46,8 @@ table.sort = function(originalTable, sortFunction, ...)
 end
 
 -- Table Insert
-table.insert = function(originalTable, value, valuePosition)
-    oldTableInsert(originalTable, tonumber(valuePosition) or #originalTable+1, value)
+table.insert = function(originalTable, value)
+    oldTableInsert(originalTable, value)
     return originalTable or nil
 end
 
