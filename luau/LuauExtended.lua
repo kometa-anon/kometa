@@ -20,8 +20,6 @@ setreadonly(string, false)
 
 -- Old Functions
 oldTableSort = table.sort
-oldTableRemove = table.remove
-oldTableInsert = table.insert
 
 -- Table filter function
 table.filter = function(originalTable, filterFunction, saveKeys)
@@ -42,18 +40,6 @@ end
 -- Table Sort
 table.sort = function(originalTable, sortFunction, ...)
     oldTableSort(originalTable, sortFunction, ...)
-    return originalTable or nil
-end
-
--- Table Insert
-table.insert = function(originalTable, value)
-    oldTableInsert(originalTable, value)
-    return originalTable or nil
-end
-
--- Table Remove
-table.remove = function(originalTable, valuePosition)
-    oldTableRemove(originalTable, valuePosition or #originalTable)
     return originalTable or nil
 end
 
