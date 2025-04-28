@@ -1,7 +1,7 @@
 # <font size = "6"> kometa - A better way to improve your gaming and Luau experience </font>
 # ![GitHub issues](https://img.shields.io/github/issues/kometa-anon/kometa) ![GitHub last commit](https://img.shields.io/github/last-commit/kometa-anon/kometa) ![GitHub commit activity](https://img.shields.io/github/commit-activity/m/kometa-anon/kometa) ![GitHub contributors](https://img.shields.io/github/contributors/kometa-anon/kometa) ![Github watchers](https://img.shields.io/github/watchers/kometa-anon/kometa?style=social) ![Github stars](https://img.shields.io/github/stars/kometa-anon/kometa?style=social) ![Github forks](https://img.shields.io/github/forks/kometa-anon/kometa?style=social)
 
-# ![kometa Banner](https://media.discordapp.net/attachments/740673508014817353/1085255610511130714/kometa_banner_no_gradient_1.gif)
+# ![kometa Banner](https://github.com/user-attachments/assets/958efca0-31c2-4c3b-abca-ff4c5516c1bd)
 
 # <font size = "6"> What is kometa?</font>
 <font size = "4">
